@@ -23,15 +23,18 @@ export default props => {
       ? elementToListenOn
       : window
 
-    // Ofsetting vertically because not vertically centered
-    // adding a few extra picels because the images aren't totally centered in the div
-    const verticalOffset = images.current.offsetTop 
-      + (images.current.offsetHeight / 2)
-      - 50
+    const rect = images.current.getBoundingClientRect()
+    const centerOfClientX = clientWidth.current / 2
+    const centerOfElementX = rect.x + (rect.width / 2)
+    const offsetX = centerOfClientX - centerOfElementX
 
+    const centerOfElementY = rect.y + (rect.height / 2)
+    const centerOfClientY = clientHeight.current / 2
+    const offsetY = centerOfClientY - centerOfElementY
+ 
     const rotateImages = ({clientX, clientY}) => {
-      const xPercent = clientX / clientWidth.current * 100
-      const yPercent = ((clientHeight.current - clientY - verticalOffset) / clientHeight.current) * 100 
+      const xPercent = ((clientX + offsetX) / clientWidth.current) * 100
+      const yPercent = ((clientHeight.current - (clientY + offsetY)) / clientHeight.current) * 100 
       
       const xDegrees = (xPercent - 50) / (50 / maxDegreesX)
       const yDegrees = (yPercent - 50) / (50 / maxDegreesY)

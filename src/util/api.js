@@ -1,21 +1,38 @@
 // TODO: move to .env
-const baseUrl = process.env.REACT_APP_UNSPLASH_URL
+const BASE_URL =  process.env.REACT_APP_UNSPLASH_URL
+const CLIENT_ID = process.env.REACT_APP_UNSPLASH_API
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
+const jwt = JSON.parse(localStorage.token)
+const authorization = jwt ? `Bearer ${jwt.access_token}` : `Client-ID ${CLIENT_ID}`
 
 const headers = new Headers({
   'content-type': 'application/json',
   'Accept-Version': 'v1',
-  'Authorization': process.env.REACT_APP_UNSPLASH_API
+  'Authorization': authorization
 })
 
 const getImages = async (page = 1, perPage = 12) => {
-  const url = `${baseUrl}photos?page=${page}&per_page=${perPage}`
+  const url = `${BASE_URL}photos?page=${page}&per_page=${perPage}`
   const res = await sendRequest(url)
   return res
 }
 
 const searchImages = async (query, page = 1, perPage = 12) => {
   if(!query) return getImages(page)
-  const url = `${baseUrl}search/photos?query=${query}&page=${page}&per_page=${perPage}`
+  const url = `${BASE_URL}search/photos?query=${query}&page=${page}&per_page=${perPage}`
+  const res = await sendRequest(url)
+  return res
+}
+
+const getProfile = async () => {
+  const url = `${BASE_URL}me`
+  const res = await sendRequest(url)
+  return res
+}
+
+const getAuthToken = async code => {
+  const url = `${SERVER_URL}gettoken/${code}`
   const res = await sendRequest(url)
   return res
 }
@@ -34,5 +51,7 @@ const sendRequest = async (url, options = {}) => {
 
 export default {
   searchImages,
-  getImages
+  getImages,
+  getAuthToken,
+  getProfile,
 }

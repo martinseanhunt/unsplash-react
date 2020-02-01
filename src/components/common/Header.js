@@ -6,29 +6,31 @@ import AnimatedShapes from './AnimatedShapes'
 import SearchForm from '../SearchForm'
 
 export default (props) => {
+  const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&response_type=code&sopepublic+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
+
   return(
     <header id="header">
+      <MenuBar
+        backgroundColor='darkGrey'
+        lightText
+      >
+        <a href={loginUrl}>Login</a>
+      </MenuBar>
       <Section 
         backgroundColor='bluePurple'
         lightText
       >
         <HeaderContent>
-          <HeaderAnimatedShapes 
-            position='absolute'
-            right='0'
-            width='350'
-            height='350'
+          <AnimatedShapes 
+            width='300'
+            height='300'
             maxDegreesY='30'
             maxDegreesX='45'
-            listenOnElementId="header"
           />
 
-          <div>
-            <h1>Image Search</h1>
-            <p>Find and save royaly free images</p>
-
+          <FormContainer>
             <SearchForm />
-          </div>
+          </FormContainer>
           
         </HeaderContent>
       </Section>
@@ -37,13 +39,16 @@ export default (props) => {
 }
 
 const HeaderContent = styled.div`
-  height: 70vh;
+  height: 430px;
+  padding-top: 30px;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
   display: flex;
-  overflow: hidden;
+  overflow-x: visible;
   flex-direction: column;
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
 
   h1 {
     margin-bottom: 30px;
@@ -55,7 +60,22 @@ const HeaderContent = styled.div`
   }
 `
 
-const HeaderAnimatedShapes = styled(AnimatedShapes)`
-  position: relative;
-  top: -50px;
+const MenuBar = styled(Section)`
+  padding: 5px 0;
+  text-align: right;
+  font-size: 14px;
+
+  a {
+    color: ${p => p.theme.colors.white};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`
+
+const FormContainer = styled.div`
+  position: absolute;
+  bottom: 70px;
 `

@@ -11,8 +11,6 @@ const Results = props => {
   const { search: { state, dispatch } } = useContext(Context)
   const { error, loading, result, page, searchQuery } = state
 
-  console.log(page, searchQuery)
-
   // TODO: Think about whether this is the best approach... Is it good to 
   // Use a hook here and allow this to update itself whenever the relevant state
   // changes since it can be changed from here or other components
@@ -24,7 +22,7 @@ const Results = props => {
         dispatch({ type: 'SET_SEARCH_RESULTS', payload })
       })
       .catch(e => {
-        console.warn(e.message)
+        console.error(e)
         dispatch({ type: 'SET_SEARCH_ERROR', payload: e.message })
       })
   },[page, searchQuery, dispatch])
@@ -55,7 +53,8 @@ const Results = props => {
       <div>
         {result.total_pages && `page ${page} of ${result.total_pages}`}
         {page > 1 && <button onClick={prevPage}>Prev</button>}
-        <button onClick={nextPage}>Next</button>
+
+        {((page <= result.total_pages) || !result.total_pages) && <button onClick={nextPage}>Next</button>}
       </div>
     </Section>
   )

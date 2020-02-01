@@ -7,7 +7,7 @@
  const medGrey = '#717171'
  const medLightGrey = '5a5a5a'
  const lightGrey = '#f2f2f'
- const opaqueGrey = '1px solid rgba(40,40,40,.2)'
+ const opaqueGrey = 'rgba(40,40,40,.2)'
 
  const theme = {
   colors: {
@@ -33,7 +33,7 @@
     titles: 'PxGroteskRegular,sans-serif',
   },
   layout: {
-    maxWidth: '1450px',
+    maxWidth: '1250px',
     widthPercent: '85%'
   }
 }
