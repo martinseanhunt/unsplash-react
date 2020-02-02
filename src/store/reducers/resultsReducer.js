@@ -1,8 +1,6 @@
 const resultsDefaultState = {
   error: null,
   loading: false,
-  page: 1,
-  searchQuery: '',
   results: [],
   totalPages: null,
 }
@@ -31,29 +29,27 @@ const resultsReducer = (state,{type, payload}) => {
         ...state,
         results: isSearch ? payload.results : payload,
         totalPages: payload.total_pages,
-        searchQuery: '',
         loading: false,
         error: null,
       }
+    case 'RESULT_REMOVE_FAVORITE': {
+      return {
+        ...state,
+        results: state.results.filter(r => r.id !== payload)
+      }
+    }
+    case 'RESULTS_APPEND_ONE': {
+      return {
+        ...state,
+        results: [...state.results, payload[0]]
+      }
+    }
     case 'SET_RESULTS_ERROR':
       return {
         ...state,
         loading: false,
         results: [],
         error: payload,
-      }
-    case 'SET_RESULTS_PAGE':
-      return {
-        ...state,
-        page: payload
-      }
-    case 'SET_REULTS_SEARCH_QUERY':
-      return {
-        ...state,
-        page: 1,
-        total_pages: null,
-        searchQuery: payload,
-        results: []
       }
     default:
       return state

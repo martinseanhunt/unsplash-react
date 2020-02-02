@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Context from '../store/Context'
 import Section from './layout/Section'
 
-const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
+const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/')}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
 
 const MenuBar = props => {
   const { user: { state, dispatch } } = useContext(Context)
@@ -18,33 +18,38 @@ const MenuBar = props => {
   }
 
   // TODO: Stop flicker of login while authenticating
-
+  
   return (
     <Bar
       backgroundColor='bluePurple'
       lightText
     >
-      {state.id ? (
-        <span>
-          Hi {state.name}
-          <button onClick={handleLogout}>
-            Logout
-          </button>
-          {pathname.includes('/favorites')
-            ? <Link to="/">Home</Link>
-            : <Link to="/favorites">My Favorites</Link>
-          }
-          
-        </span>
-      ) : (
+      {state.hasCheckedAuth ? (
         <>
-          {state.loading ? (
-            <span>Loading...</span>
-          ) : (   
-            <a href={loginUrl}>Login</a>
+          {state.id ? (
+            <span>
+              Hi {state.name}
+              <button onClick={handleLogout}>
+                Logout
+              </button>
+              {pathname.includes('/favorites')
+                ? <Link to="/">Home</Link>
+                : <Link to="/favorites">My Favorites</Link>
+              }
+              
+            </span>
+          ) : (
+            <>
+              {state.loading ? (
+                <span>Loading...</span>
+              ) : (   
+                <a href={loginUrl}>Login</a>
+              )}
+            </>
           )}
         </>
-      )}
+      ) : ( <span>...</span> )}
+
     </Bar>
   )
 }

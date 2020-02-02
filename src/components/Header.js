@@ -6,7 +6,7 @@ import AnimatedShapes from './AnimatedShapes'
 import SearchForm from './SearchForm'
 import MenuBar from './MenuBar'
 
-export default (props) => {
+const Header = (props) => {
   return(
     <header id="header">
       <MenuBar />
@@ -62,3 +62,5 @@ const FormContainer = styled.div`
   position: absolute;
   bottom: 80px;
 `
+
+export default Header

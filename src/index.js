@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -13,16 +13,15 @@ import authenticate from './util/authenticate'
 import Header from './components/Header'
 import Results from './components/Results/Results'
 
+import Loading from './components/Loading'
+
 const App = () => {
   const store = useStore()
   const { dispatch } = store.user
 
-  const [enableRedirects, setEnableRedirects] = useState(false)
-
   useEffect(() => {
     authenticate(dispatch)
-    setEnableRedirects(true)
-  }, [dispatch, setEnableRedirects])
+  }, [dispatch])
   
   return(
     <ThemeProvider theme={theme}>
@@ -30,14 +29,18 @@ const App = () => {
       <Provider value={store}>
         <BrowserRouter>
           <Header />
-          <Switch>
-            <PrivateRoute path="/favorites" enableRedirects={enableRedirects}>
-              <Results />
-            </PrivateRoute>
-            <Route path="/">
-              <Results />
-            </Route>
-          </Switch>
+          {store.user.state.hasCheckedAuth ? (
+            <Switch>
+              <PrivateRoute path="/favorites">
+                <Results />
+              </PrivateRoute>
+              <Route path="/:page?/:query?">
+                <Results />
+              </Route>
+            </Switch>
+          ) : (
+            <Loading />
+          )}
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
@@ -45,4 +48,3 @@ const App = () => {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
-

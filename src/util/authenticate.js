@@ -5,19 +5,25 @@ import api from './api'
 
 const authenticate = async (userDispatch) => {
   const jwt = localStorage.token 
-  if(jwt) return getUserProfile(userDispatch)
+  if(jwt) {
+    getUserProfile(userDispatch)
+    userDispatch({ type: 'SET_USER_CHECKED_AUTH' })
+    return 
+  } 
 
   const params = new URLSearchParams(window.location.search) 
-  if(!params.has('code')) return undefined
+  if(!params.has('code')) return userDispatch({ type: 'SET_USER_CHECKED_AUTH' })
 
   try {
     const token = await api.getAuthToken(params.get('code'))
     localStorage.setItem('token', JSON.stringify(token))
     getUserProfile(userDispatch)
+    userDispatch({ type: 'SET_USER_CHECKED_AUTH' })
   } catch(e) {
     // TODO: dispatch error getting token
     console.error(e)
   }
+  
 }
 
 const getUserProfile = async (userDispatch, token) => {

@@ -1,16 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-
-import Context from '../store/Context'
+import { useHistory } from 'react-router-dom'
 
 const SearchForm = props => {
-  const { results: { dispatch } } = useContext(Context)
   const [inputValue, setInputValue] = useState('')
+  const history = useHistory()
   
   const handleSubmit = async e => {
-    // TODO: Refactor this in to a custom hook
     e.preventDefault()
-    dispatch({ type: 'SET_REULTS_SEARCH_QUERY', payload: inputValue })
+    history.push(`/?page=1&query=${inputValue}`)
   }
 
   return (

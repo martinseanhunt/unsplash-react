@@ -6,10 +6,11 @@ import Context from '../../store/Context'
 
 // TODO: Refactor heart in to own component
 
-const ResultCard =  ({ result }) => {
-  const { user: { state: user } } = useContext(Context)
+const ResultCard =  ({ result, isFavorites, page }) => {
+  const { user: { state: user }, results: { dispatch: resultsDispatch } } = useContext(Context)
   const [clicked, setClicked] = useState()
   const [faved, setFaved] = useState(result.liked_by_user)
+  const [removeFromPage, setRemoveFromPage] = useState(false)
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -22,15 +23,29 @@ const ResultCard =  ({ result }) => {
   const handleFave = () => {
     setClicked(true)
     setFaved(f => !f)
-    // TODO: This works now, but if the component gets unmounted we'll lose the state
-    // need to run this through the reducer, find and update the relevant result
-    api.likePhoto(result.id) 
-      .then(res => console.log(res))
-      .catch(e => console.log(e))
+
+    if(!faved) {
+      api.likePhoto(result.id) 
+        .then(res => console.log(res))
+        .catch(e => console.log(e))
+    } else {
+      if(isFavorites) setRemoveFromPage(true)
+      api.unlikePhoto(result.id) 
+        .then(res => {
+          if(!isFavorites) return 
+          return api.getFavorites(user.username, page + 1)
+        }).then((payload) => {
+          resultsDispatch({ type: 'RESULT_REMOVE_FAVORITE', payload: result.id})
+          if(payload.length)
+            resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload })          
+        })
+        .catch(e => console.log(e))
+    }
+    
   }
 
   return (
-    <Card key={result.id}>
+    <Card key={result.id} className={removeFromPage ? 'remove': ''}>
       <img 
         src={result.urls.small} 
         alt={result.description || `${result.user.username}'s photo`} 
@@ -71,6 +86,11 @@ const Card = styled.div`
   padding-right: 20px;
   padding-top: 20px;
   position: relative;
+  transition: opacity 1s;
+
+  &.remove {
+    opacity: 0;
+  }
 
   &:nth-child(3n) {
     padding-right: 0;
