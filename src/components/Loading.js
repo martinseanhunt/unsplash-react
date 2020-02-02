@@ -13,20 +13,24 @@ const Loading = props => {
         return ''
       })
     } ,100)
-    return clearInterval(id)
+    return () => clearInterval(id)
   }, [])
+
+  const text = 'Loading' + loadingDots
+
+  if(props.noStyle) return <span>{text}</span>
 
   return (
     <Section>
-      <LoadingInner>
-        <span>Loading{loadingDots}</span>
+      <LoadingInner {...props}>
+        <span>{text}</span>
       </LoadingInner>
     </Section>
   )
 }
 
 const LoadingInner = styled.div`
-  height: calc(100vh - 430px);
+  height: ${({ height }) => height ? `${height}px` : 'calc(100vh - 467px)'};
   display: flex;
   justify-content: center;
   align-items: center;

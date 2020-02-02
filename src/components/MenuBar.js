@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 import Context from '../store/Context'
 import Section from './layout/Section'
+import Loading from './Loading'
 
 const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/')}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
 
@@ -17,39 +18,40 @@ const MenuBar = props => {
     dispatch({ type: 'USER_LOGOUT' })
   }
 
-  // TODO: Stop flicker of login while authenticating
+  const Login = () => 
+    <>
+      {state.loading ? (
+        <Loading noStyle={true}/>
+      ) : (   
+        <a href={loginUrl}>Login</a>
+      )}
+    </>
+
+  const UserMenu = () => 
+    <span>
+      Hi {state.name}
+      <button onClick={handleLogout}>
+        Logout
+      </button>
+      {pathname.includes('/favorites')
+        ? <Link to="/">Home</Link>
+        : <Link to="/favorites">My Favorites</Link>
+      }
+    </span>
+
+  const GetComponent = () => {
+    if(state.error) return <Login />
+    if(state.hasCheckedAuth && !state.id) return <Login />
+    if(state.hasCheckedAuth && state.id) return <UserMenu />
+    return <div></div>
+  }
   
   return (
     <Bar
       backgroundColor='bluePurple'
       lightText
     >
-      {state.hasCheckedAuth ? (
-        <>
-          {state.id ? (
-            <span>
-              Hi {state.name}
-              <button onClick={handleLogout}>
-                Logout
-              </button>
-              {pathname.includes('/favorites')
-                ? <Link to="/">Home</Link>
-                : <Link to="/favorites">My Favorites</Link>
-              }
-              
-            </span>
-          ) : (
-            <>
-              {state.loading ? (
-                <span>Loading...</span>
-              ) : (   
-                <a href={loginUrl}>Login</a>
-              )}
-            </>
-          )}
-        </>
-      ) : ( <span>...</span> )}
-
+      <GetComponent />
     </Bar>
   )
 }
@@ -58,6 +60,11 @@ const Bar = styled(Section)`
   padding: 5px 0;
   text-align: right;
   font-size: 13px;
+  color: ${p => p.theme.colors.white};
+  
+  div{ 
+    min-height: 26.667px;
+  }
 
   a {
     color: ${p => p.theme.colors.white};

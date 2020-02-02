@@ -60,14 +60,9 @@ const sendRequest = async (url, options = {}) => {
   })
 
   const res = await fetch(url, { headers, ...options })
-
-  // Catch anything else (no errors property in response)
   if(!res.ok) throw new Error(`${res.status}: ${res.statusText}`)
-  
-  const json = await res.json()
 
-  // Catch unsplash specific errors
-  if(json.errors) throw new Error(json.errors)
+  const json = await res.json()
 
   return json
 }

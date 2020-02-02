@@ -19,7 +19,7 @@ const SearchForm = props => {
         placeholder="Find images of..."
         onChange={e => setInputValue(e.target.value)}  
       />
-      <button>Submit</button>
+      <button>Search</button>
     </Form>
   )
 }

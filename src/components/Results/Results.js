@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useLocation, useHistory } from 'react-router-dom'
 
@@ -7,10 +7,15 @@ import useQuery from '../../util/useQuery'
 import Context from '../../store/Context'
 import Section from '../layout/Section'
 import ResultCard from './ResultCard'
+import Loading from '../Loading'
+import Error from '../Error'
 
 const Results = props => {
   const { results: { state, dispatch }, user: { state: user } } = useContext(Context)
   const { error, loading, results, totalPages } = state
+
+  // TODO cehck if this works when we're being rate limited
+  const [hideRender, setHideRender] = useState(true)
 
   const { pathname } = useLocation()
   const history = useHistory()
@@ -26,6 +31,7 @@ const Results = props => {
   // changes since it can be changed from here or other components
   useEffect(() => {
     dispatch({ type: 'SET_RESULTS_LOADING' })
+    setHideRender(false)
 
     if(isFavorites && user.id) {
       api.getFavorites(user.username, page)
@@ -49,13 +55,17 @@ const Results = props => {
   },[page, searchQuery, dispatch, pathname, user, isFavorites])
 
   const handleChangePage = (change) => {
+    window.scrollTo({
+      top: 486, // TODO: This is a lame quick fix... Could do this dynamically
+      behavior: 'smooth'
+    })
     history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
   }
 
-  // TODO: Error and Loading components
-  if(loading) return (<div>Loading...</div>)
-  if(error) return (<div>{state.error}</div>)
-
+  if(loading) return (<Loading height='1591'/>) // TODO: This is a lame quick fix... Could do this dynamically
+  if(error) return (<Error error={error} />)
+  if(hideRender) return <span></span>
+  
   return (
     <Section>
       {/*TODO: refactor all of these small spans in to a component*/}
@@ -82,7 +92,7 @@ const Results = props => {
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
           </button>
         }
-        {((page <= totalPages) || !totalPages) && 
+        {((page < totalPages) || !totalPages) && 
           <button 
             onClick={() => handleChangePage(1)}
             className="next"
@@ -104,17 +114,19 @@ const ResultsContainer = styled.div`
 
 const Pagination = styled.div`
   margin-top: 80px;
+  height: 85px;
   margin-bottom: 100px;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   text-align: center;
+  position: relative;
 
   button {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0 30px;
+    position: absolute;
+    left: -19px;
 
     // Not in the real world (A11Y)
     outline: none;
@@ -138,6 +150,8 @@ const Pagination = styled.div`
       svg {
         transform: scale(-1)
       }
+      left: auto;
+      right -19px;
     }
   }
 

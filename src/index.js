@@ -11,9 +11,10 @@ import useStore from './store/useStore'
 import authenticate from './util/authenticate'
 
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Results from './components/Results/Results'
-
 import Loading from './components/Loading'
+import Error from './components/Error'
 
 const App = () => {
   const store = useStore()
@@ -22,6 +23,10 @@ const App = () => {
   useEffect(() => {
     authenticate(dispatch)
   }, [dispatch])
+
+  const backupComponent = store.user.error
+    ? <Error error={'Unable to login, try again?'}/>
+    : <Loading />
   
   return(
     <ThemeProvider theme={theme}>
@@ -39,8 +44,9 @@ const App = () => {
               </Route>
             </Switch>
           ) : (
-            <Loading />
+            backupComponent
           )}
+          <Footer />
         </BrowserRouter>
       </Provider>
     </ThemeProvider>

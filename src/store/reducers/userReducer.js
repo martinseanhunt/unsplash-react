@@ -1,5 +1,6 @@
 const userDefaultState = {
-  hasCheckedAuth: false
+  hasCheckedAuth: false,
+  error: null
 }
 
 const userReducer =(state,{type, payload}) => {
@@ -7,18 +8,27 @@ const userReducer =(state,{type, payload}) => {
     case 'SET_USER_CHECKED_AUTH':
       return {
         ...state,
-        hasCheckedAuth: true
+        hasCheckedAuth: true,
+        error: null
       }
     case 'SET_USER_PROFILE': 
       return {
         ...state,
         ...payload,
-        loading: false
+        loading: false,
+        error: null
       }
     case 'SET_USER_LOADING':
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: null
+      }
+    case 'SET_USER_ERROR':
+      return {
+        hasCheckedAuth: false,
+        error: payload,
+        loading: false
       }
     case 'USER_LOGOUT':
       return {

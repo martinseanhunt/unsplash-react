@@ -20,8 +20,7 @@ const authenticate = async (userDispatch) => {
     getUserProfile(userDispatch)
     userDispatch({ type: 'SET_USER_CHECKED_AUTH' })
   } catch(e) {
-    // TODO: dispatch error getting token
-    console.error(e)
+    userDispatch({ type: 'SET_USER_ERROR', payload: e })
   }
   
 }
@@ -42,8 +41,7 @@ const getUserProfile = async (userDispatch, token) => {
     userDispatch({ type: 'SET_USER_PROFILE', payload: profile })
     localStorage.setItem('user', JSON.stringify(profile))
   } catch(e) {
-    // TODO: dispatch login error
-    console.error(e)
+    userDispatch({ type: 'SET_USER_ERROR', payload: e })
   }
 }   
 

@@ -5,7 +5,8 @@
  const babyBlue = '#00d2ff'
  const white = '#fff'
  const medGrey = '#717171'
- const medLightGrey = '5a5a5a'
+ const medLightGrey = '#5a5a5a'
+ const medLightGrey2 = '#8a8a8a'
  const lightGrey = '#f2f2f'
  const opaqueGrey = 'rgba(40,40,40,0.2)'
  const opaqueBlack = 'rgba(0,0,0,0.2)'
@@ -19,6 +20,7 @@
     white,
     medGrey,
     medLightGrey,
+    medLightGrey2,
     lightGrey,
     opaqueGrey,
     opaqueBlack
