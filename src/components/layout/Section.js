@@ -10,7 +10,7 @@ const background = props => {
     const colors = Object.values(theme.bannerColors)
     return colors[Math.floor(Math.random() * colors.length)]
   } else if(backgroundColor) {
-    return theme.bannerColors[backgroundColor]
+    return theme.colors[backgroundColor]
   }
 
   return theme.colors.white

@@ -6,48 +6,18 @@ import theme from './styles/theme'
 import GlobalStyle from './styles/global'
 import { Provider } from './store/Context'
 import useStore from './store/useStore'
+import authenticate from './util/authenticate'
 
-import Header from './components/common/Header'
+import Header from './components/Header'
 import Results from './components/Results/Results'
-
-import api from './util/api'
 
 const App = () => {
   const store = useStore()
+  const { dispatch } = store.user
 
   useEffect(() => {
-    const jwt = localStorage.token
-    if(jwt) return undefined
-
-    // would hook up react router and get the params from there in real world
-    const params = new URLSearchParams(window.location.search) 
-    if(!params.has('code')) return null
-
-    const authCode = params.get('code')
-    api.getAuthToken(authCode)
-      .then(res => {
-        localStorage.setItem('token', JSON.stringify(res))
-      })
-      .catch(e => {
-        // TODO: dispatch login error
-        console.error(e)
-      })
-  }, [])
-
-  const storeDispatch = store.user.dispatch
-  useEffect(() => {
-    const jwt = localStorage.token
-    if(!jwt) return undefined
-
-    api.getProfile()
-      .then(payload => {
-        storeDispatch({ type: 'SET_USER', payload })
-      })
-      .catch(e => {
-        // TODO: dispatch login error
-        console.error(e)
-      })
-  }, [storeDispatch])
+    authenticate(dispatch)
+  }, [dispatch])
 
   return(
     <ThemeProvider theme={theme}>

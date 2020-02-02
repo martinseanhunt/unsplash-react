@@ -1,27 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Section from '../layout/Section'
+import Section from './layout/Section'
 import AnimatedShapes from './AnimatedShapes'
-import SearchForm from '../SearchForm'
+import SearchForm from './SearchForm'
+import MenuBar from './MenuBar'
 
 export default (props) => {
-  const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&response_type=code&sopepublic+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
-
   return(
     <header id="header">
-      <MenuBar
-        backgroundColor='darkGrey'
-        lightText
-      >
-        <a href={loginUrl}>Login</a>
-      </MenuBar>
+      <MenuBar />
       <Section 
         backgroundColor='bluePurple'
         lightText
       >
         <HeaderContent>
-          <AnimatedShapes 
+          <BannerShapes 
             width='300'
             height='300'
             maxDegreesY='30'
@@ -60,22 +54,11 @@ const HeaderContent = styled.div`
   }
 `
 
-const MenuBar = styled(Section)`
-  padding: 5px 0;
-  text-align: right;
-  font-size: 14px;
-
-  a {
-    color: ${p => p.theme.colors.white};
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+const BannerShapes = styled(AnimatedShapes)`
+  top: -30px;
 `
 
 const FormContainer = styled.div`
   position: absolute;
-  bottom: 70px;
+  bottom: 80px;
 `

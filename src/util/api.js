@@ -3,15 +3,6 @@ const BASE_URL =  process.env.REACT_APP_UNSPLASH_URL
 const CLIENT_ID = process.env.REACT_APP_UNSPLASH_API
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-const jwt = JSON.parse(localStorage.token)
-const authorization = jwt ? `Bearer ${jwt.access_token}` : `Client-ID ${CLIENT_ID}`
-
-const headers = new Headers({
-  'content-type': 'application/json',
-  'Accept-Version': 'v1',
-  'Authorization': authorization
-})
-
 const getImages = async (page = 1, perPage = 12) => {
   const url = `${BASE_URL}photos?page=${page}&per_page=${perPage}`
   const res = await sendRequest(url)
@@ -38,6 +29,15 @@ const getAuthToken = async code => {
 }
 
 const sendRequest = async (url, options = {}) => {
+  const jwt = localStorage.token
+  const authorization = jwt ? `Bearer ${JSON.parse(jwt).access_token}` : `Client-ID ${CLIENT_ID}`
+
+  const headers = new Headers({
+    'content-type': 'application/json',
+    'Accept-Version': 'v1',
+    'Authorization': authorization
+  })
+
   const res = await fetch(url, { headers, ...options })
   const json = await res.json()
 

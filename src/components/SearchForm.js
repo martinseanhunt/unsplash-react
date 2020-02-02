@@ -4,13 +4,13 @@ import styled from 'styled-components'
 import Context from '../store/Context'
 
 const SearchForm = props => {
-  const { search: { dispatch } } = useContext(Context)
+  const { results: { dispatch } } = useContext(Context)
   const [inputValue, setInputValue] = useState('')
   
   const handleSubmit = async e => {
     // TODO: Refactor this in to a custom hook
     e.preventDefault()
-    dispatch({ type: 'SET_SEARCH_QUERY', payload: inputValue })
+    dispatch({ type: 'SET_REULTS_SEARCH_QUERY', payload: inputValue })
   }
 
   return (
@@ -29,9 +29,16 @@ const SearchForm = props => {
 const Form = styled.form`
   opacity: 0.9;
 
+  input, button {
+    border: 1px solid ${p => p.theme.colors.opaqueGrey};
+    background: ${p => p.theme.colors.white};
+
+    // Wouldn't do this in the real world (A11Y)
+    &:focus { outline: none; }
+  }
+
   input {
     padding: 15px 25px;
-    border: 1px solid ${p => p.theme.colors.opaqueGrey};
     width: 325px;
   }
 
@@ -41,8 +48,6 @@ const Form = styled.form`
     text-transform: uppercase;
     padding: 15px 0;
     text-align: center;
-    background: ${p => p.theme.colors.white};
-    border: 1px solid ${p => p.theme.colors.opaqueGrey};
     border-left: none;
     cursor: pointer;
   }
