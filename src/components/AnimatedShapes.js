@@ -56,9 +56,9 @@ export default props => {
   
   return (
     <ImageContainer {...props} ref={images}>
-      <img src="./img/bannershape3.svg" alt="animated shape" />
-      <img src="./img/bannershape2.svg" alt="animated shape" />
-      <img src="./img/bannershape1.svg" alt="animated shape" />  
+      <img src="/img/bannershape3.svg" alt="animated shape" />
+      <img src="/img/bannershape2.svg" alt="animated shape" />
+      <img src="/img/bannershape1.svg" alt="animated shape" />  
     </ImageContainer>
   )
 }

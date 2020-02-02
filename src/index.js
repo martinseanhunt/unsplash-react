@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'styled-components'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
+import PrivateRoute from './components/PrivateRoute'
 import theme from './styles/theme'
 import GlobalStyle from './styles/global'
 import { Provider } from './store/Context'
@@ -15,19 +17,32 @@ const App = () => {
   const store = useStore()
   const { dispatch } = store.user
 
+  const [enableRedirects, setEnableRedirects] = useState(false)
+
   useEffect(() => {
     authenticate(dispatch)
-  }, [dispatch])
-
+    setEnableRedirects(true)
+  }, [dispatch, setEnableRedirects])
+  
   return(
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Provider value={store}>
-        <Header />
-        <Results />
+        <BrowserRouter>
+          <Header />
+          <Switch>
+            <PrivateRoute path="/favorites" enableRedirects={enableRedirects}>
+              <Results />
+            </PrivateRoute>
+            <Route path="/">
+              <Results />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </Provider>
     </ThemeProvider>
   )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
+

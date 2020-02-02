@@ -2,12 +2,14 @@ const resultsDefaultState = {
   error: null,
   loading: false,
   page: 1,
-  searchTerm: '',
+  searchQuery: '',
   results: [],
   totalPages: null,
 }
 
 const resultsReducer = (state,{type, payload}) => {
+  const isSearch = !Array.isArray(payload)
+
   switch(type) {
     case 'SET_RESULTS_LOADING':
       return {
@@ -17,12 +19,19 @@ const resultsReducer = (state,{type, payload}) => {
         results: []
       }
     case 'SET_RESULTS_RESULTS':
-      const isSearch = !Array.isArray(payload)
-
       return {
         ...state,
         results: isSearch ? payload.results : payload,
         totalPages: payload.total_pages,
+        loading: false,
+        error: null,
+      }
+    case 'SET_RESULTS_FAVORITES':
+      return {
+        ...state,
+        results: isSearch ? payload.results : payload,
+        totalPages: payload.total_pages,
+        searchQuery: '',
         loading: false,
         error: null,
       }

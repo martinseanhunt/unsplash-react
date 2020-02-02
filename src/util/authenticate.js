@@ -1,5 +1,8 @@
 import api from './api'
 
+// TODO: Change this in to hook then can use params, history from router an don't need to 
+// pass dispatch
+
 const authenticate = async (userDispatch) => {
   const jwt = localStorage.token 
   if(jwt) return getUserProfile(userDispatch)
@@ -18,10 +21,20 @@ const authenticate = async (userDispatch) => {
 }
 
 const getUserProfile = async (userDispatch, token) => {
+  userDispatch({ type: 'SET_USER_LOADING' })
+
+  const localUser = localStorage.user
+
+  if(localUser && localStorage.token) 
+    return userDispatch({ 
+      type: 'SET_USER_PROFILE', 
+      payload: JSON.parse(localUser) 
+    })
+
   try {
-    userDispatch({ type: 'SET_USER_LOADING' })
     const profile = await api.getProfile(token)
     userDispatch({ type: 'SET_USER_PROFILE', payload: profile })
+    localStorage.setItem('user', JSON.stringify(profile))
   } catch(e) {
     // TODO: dispatch login error
     console.error(e)

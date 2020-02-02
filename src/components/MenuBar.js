@@ -1,16 +1,19 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { Link, useLocation } from 'react-router-dom'
 
 import Context from '../store/Context'
 import Section from './layout/Section'
 
-const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&response_type=code&sopepublic+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
+const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent('http://localhost:3000/login')}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
 
 const MenuBar = props => {
   const { user: { state, dispatch } } = useContext(Context)
+  const { pathname } = useLocation()
 
   const handleLogout = e => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     dispatch({ type: 'USER_LOGOUT' })
   }
 
@@ -27,12 +30,17 @@ const MenuBar = props => {
           <button onClick={handleLogout}>
             Logout
           </button>
+          {pathname.includes('/favorites')
+            ? <Link to="/">Home</Link>
+            : <Link to="/favorites">My Favorites</Link>
+          }
+          
         </span>
       ) : (
         <>
           {state.loading ? (
             <span>Loading...</span>
-          ) : (      
+          ) : (   
             <a href={loginUrl}>Login</a>
           )}
         </>
@@ -48,10 +56,10 @@ const Bar = styled(Section)`
 
   a {
     color: ${p => p.theme.colors.white};
-    text-decoration: none;
+    padding-left: 10px;
 
     &:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
   }
 

@@ -22,9 +22,24 @@ const getProfile = async () => {
   return res
 }
 
+const getFavorites = async (user, page = 1, perPage = 12) => {
+  const url = `${BASE_URL}users/${user}/likes?page=${page}&per_page=${perPage}`
+  const res = await sendRequest(url)
+  return res
+}
+
 const getAuthToken = async code => {
   const url = `${SERVER_URL}gettoken/${code}`
   const res = await sendRequest(url)
+  return res
+}
+
+const likePhoto = async (id) => {
+  const url = `${BASE_URL}photos/${id}/like`
+  const res = await sendRequest(url, {
+    method: 'POST',
+  })
+
   return res
 }
 
@@ -39,12 +54,14 @@ const sendRequest = async (url, options = {}) => {
   })
 
   const res = await fetch(url, { headers, ...options })
+
+  // Catch anything else (no errors property in response)
+  if(!res.ok) throw new Error(`${res.status}: ${res.statusText}`)
+  
   const json = await res.json()
 
   // Catch unsplash specific errors
   if(json.errors) throw new Error(json.errors)
-  // Catch anything else (no errors property in response)
-  if(!res.ok) throw new Error(`${res.status} ${res.statusText}`)
 
   return json
 }
@@ -54,4 +71,6 @@ export default {
   getImages,
   getAuthToken,
   getProfile,
+  likePhoto,
+  getFavorites
 }
