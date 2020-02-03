@@ -16,10 +16,10 @@ const Header = (props) => {
       >
         <HeaderContent>
           <BannerShapes 
-            width='300'
-            height='300'
+            width='325'
+            height='325'
             maxDegreesY='30'
-            maxDegreesX='45'
+            maxDegreesX='60'
           />
 
           <FormContainer>

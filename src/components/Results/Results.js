@@ -62,7 +62,7 @@ const Results = props => {
     history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
   }
 
-  if(loading) return (<Loading height='1591'/>) // TODO: This is a lame quick fix... Could do this dynamically
+  if(loading) return (<Loading height={results.length ? '1591' : undefined}/>) // TODO: This is a lame quick fix... Could do this dynamically
   if(error) return (<Error error={error} />)
   if(hideRender) return <span></span>
   
