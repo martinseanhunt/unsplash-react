@@ -3,6 +3,8 @@ const BASE_URL =  process.env.REACT_APP_UNSPLASH_URL
 const CLIENT_ID = process.env.REACT_APP_UNSPLASH_API
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
+// Would normally use Axios for these... Just having a play with fetch
+
 const getImages = async (page = 1, perPage = 12) => {
   const url = `${BASE_URL}photos?page=${page}&per_page=${perPage}`
   const res = await sendRequest(url)
@@ -60,7 +62,15 @@ const sendRequest = async (url, options = {}) => {
   })
 
   const res = await fetch(url, { headers, ...options })
-  if(!res.ok) throw new Error(`${res.status}: ${res.statusText}`)
+
+  if(!res.ok) {
+    const responseText = await res.text()
+    console.warn({
+      status: res.status,
+      body: responseText
+    })
+    throw new Error(`${res.status}: ${responseText || res.statusText}`)
+  }
 
   const json = await res.json()
 

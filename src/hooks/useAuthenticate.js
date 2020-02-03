@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react'
 
-import api from './api'
+import api from '../api/api'
+import useQuery from './useQuery'
+import { useUserContext } from '../context/user/UserContext'
 
-const useAuthenticate = (dispatch) => {
+const useAuthenticate = () => {
   const [initialized, setInitialized] = useState(false)
+  const { dispatch } = useUserContext()
+
+  const query = useQuery()
+  const authCode = query.get('code')
 
   useEffect(() => {
-    // TODO: Check this only runs once
-    const params = new URLSearchParams(window.location.search) 
-    const authCode = params.get('code')
+    if(initialized) return undefined
+
     const { token, user } = localStorage
 
     const initialize = () => {
@@ -24,7 +29,7 @@ const useAuthenticate = (dispatch) => {
           payload: JSON.parse(user) 
         })
         initialize()
-        return null
+        return undefined
       }
       
       // No local user so get user from API
@@ -62,7 +67,7 @@ const useAuthenticate = (dispatch) => {
       // We're logged out
       initialize()
     }
-  }, [dispatch])
+  }, [authCode, initialized, dispatch])
 
   return initialized
 }

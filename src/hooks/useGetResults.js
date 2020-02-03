@@ -1,17 +1,19 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import api from '../../util/api'
-import Context from '../../store/Context'
-import useQuery from '../../util/useQuery'
+import api from '../api/api'
+import { useUserContext } from '../context/user/UserContext'
+import { useResultsContext } from '../context/results/ResultsContext'
+import useQuery from './useQuery'
 
 const useGetResults = () => {
-  const { results: { dispatch }, user: { state: user } } = useContext(Context)
+  const { dispatch: resultsDispatch } = useResultsContext()
+  const { state: user } = useUserContext()
 
   const { pathname } = useLocation()
-  const query = useQuery()
   const isFavourites = pathname.includes('/favourites')
 
+  const query = useQuery()
   const page = parseInt(query.get('page')) || 1
   const searchQuery = query.get('query')
 
@@ -21,7 +23,7 @@ const useGetResults = () => {
     const getFavourites = async () => {
       try {
         const payload = await api.getFavourites(username, page)
-        dispatch({ type: 'SET_RESULTS_FAVOURITES', payload })
+        resultsDispatch({ type: 'SET_RESULTS_FAVOURITES', payload })
       } catch(e) {
         handleError(e)
       }
@@ -30,15 +32,15 @@ const useGetResults = () => {
     const searchImages = async () => {
       try {
         const payload = await api.searchImages(searchQuery, page)
-        dispatch({ type: 'SET_RESULTS_RESULTS', payload })
+        resultsDispatch({ type: 'SET_RESULTS_RESULTS', payload })
       } catch(e) {
           handleError(e)
       }
     }
 
-    const handleError = e => dispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
+    const handleError = e => resultsDispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
     
-    dispatch({ type: 'SET_RESULTS_LOADING' })
+    resultsDispatch({ type: 'SET_RESULTS_LOADING' })
 
     if(isFavourites && userId){
       getFavourites()
@@ -46,7 +48,7 @@ const useGetResults = () => {
       searchImages()
     } 
     
-  },[page, searchQuery, dispatch, pathname, userId, username, isFavourites])
+  },[page, searchQuery, resultsDispatch, pathname, userId, username, isFavourites])
 
   return {
     page,

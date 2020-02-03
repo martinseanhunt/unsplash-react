@@ -3,24 +3,31 @@ import styled from 'styled-components'
 
 import Section from './layout/Section'
 
-// TODO: refactor, share style with loading
+// TODO: share style with loading
 
-const Error = props => {
-  let error
-  if(props.error && props.error.includes('403')) {
-    error = `Looks like we've hit our max API calls (50 per hour)... Try later`
+const Error = (props) => {
+  const { error, noStyle } = props
+
+  let errorMessage
+  if(typeof error === 'string') {
+    if(error.includes('Rate Limit Exceeded')) {
+      errorMessage = 
+        `Looks like we've hit our max API calls (50 per hour)... Try later`
+    }
+    
+    if(error.includes('401')) {
+      errorMessage = 
+        `Hmmm... Unsplash says we're unauthorized, check the token / access credentials`
+    }
   }
   
-  if(props.error && props.error.includes('401')) {
-    error = `Hmmm... Unsplash says we're unauthorized, check the token / access credentials`
-  }
-
-  if(props.noStyle) return <span>Oops: {error || props.error}</span>
+  if(noStyle) 
+    return <span>Oops: {errorMessage || error.message || error}</span>
 
   return (
     <Section>
       <LoadingInner {...props}>
-        <span>Oops: {error || props.error} 🤷‍♂️</span>
+        <span>Oops: {errorMessage || error.message || error} 🤷‍♂️</span>
       </LoadingInner>
     </Section>
   )

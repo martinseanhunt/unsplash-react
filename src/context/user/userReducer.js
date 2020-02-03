@@ -1,4 +1,4 @@
-const userDefaultState = {
+const initialState = {
   hasCheckedAuth: false,
   error: null
 }
@@ -40,4 +40,4 @@ const userReducer =(state,{type, payload}) => {
 }
 
 export default userReducer
-export { userDefaultState }
+export { initialState }

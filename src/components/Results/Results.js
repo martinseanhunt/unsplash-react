@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-import Context from '../../store/Context'
-import useGetResults from './useGetResults'
+import { useResultsContext } from '../../context/results/ResultsContext'
+import useGetResults from '../../hooks/useGetResults'
 
 import Section from '../layout/Section'
 import ResultCard from './ResultCard'
@@ -13,9 +13,8 @@ import ResultsTitle from './ResultsTitle'
 import Pagination from './Pagination'
 
 const Results = props => {
-  const { results: { state } } = useContext(Context)
-
   const history = useHistory()
+  const { state } = useResultsContext()
   
   const { 
     error, 
@@ -34,7 +33,7 @@ const Results = props => {
 
   const handleChangePage = (change) => {
     // TODO: This is a quick fix... Improve getting top value
-    // TODO: This would work a lot better with prefetching
+    // TODO: This will break on huge screens 
     window.scrollTo({
       top: 486, 
       behavior: 'smooth'

@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 
-import Context from '../store/Context'
+import { useUserContext } from '../context/user/UserContext'
 import Section from './layout/Section'
 import Loading from './Loading'
 
 const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent(process.env.REACT_APP_FRONTEND_URL)}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
 
 const MenuBar = props => {
-  const { user: { state, dispatch } } = useContext(Context)
+  const { state, dispatch } = useUserContext()
   const { pathname } = useLocation()
 
   const handleLogout = e => {

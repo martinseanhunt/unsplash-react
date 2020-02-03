@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 
-import api from '../../util/api'
-import Context from '../../store/Context'
+import api from '../../api/api'
+import { useUserContext } from '../../context/user/UserContext'
+import { useResultsContext } from '../../context/results/ResultsContext'
 
 const ResultCard =  ({ result, isFavourites, page }) => {
-  const { user: { state: user }, results: { dispatch: resultsDispatch } } = useContext(Context)
+  const { state: user } = useUserContext()
+  const { dispatch: resultsDispatch } = useResultsContext() 
+
   const [clicked, setClicked] = useState()
-  const [faved, setFaved] = useState(result.liked_by_user)
   const [removeFromPage, setRemoveFromPage] = useState(false)
 
   useEffect(() => {
@@ -18,34 +20,48 @@ const ResultCard =  ({ result, isFavourites, page }) => {
     return () => clearTimeout(id)
   }, [clicked])
 
+  const likePhoto = async () => {
+    try {
+      await api.likePhoto(result.id)
+      resultsDispatch({ 
+        type: 'RESULT_SET_FAVOURITE', 
+        payload: { id: result.id, value: true } 
+      })
+    } catch(e) {
+      console.warn(e)
+    } 
+  }
+
+  const unlikePhoto = async () => {
+    if(isFavourites) setRemoveFromPage(true)
+      
+    try {
+      if(!isFavourites) {
+        await api.unlikePhoto(result.id) 
+        resultsDispatch({ 
+          type: 'RESULT_SET_FAVOURITE', 
+          payload: { id: result.id, value: false } 
+        })
+      } else {
+        const nextPage = await api.getFavourites(user.username, page + 1)
+        await api.unlikePhoto(result.id) 
+        resultsDispatch({ type: 'RESULT_REMOVE_FAVOURITE', payload: result.id})
+        if(nextPage.length)
+          resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload: nextPage })
+      }
+    } catch(e) {
+      console.warn(e)
+    }
+  }
+
   const handleFave = async () => {
     setClicked(true)
-    setFaved(f => !f)
 
-    if(!faved) {
-      try {
-        await api.likePhoto(result.id) 
-      } catch(e) {
-        console.warn(e)
-      } 
+    if(!result.liked_by_user) {
+      likePhoto()
     } else {
-      if(isFavourites) setRemoveFromPage(true)
-      
-      try {
-        if(!isFavourites) {
-          await api.unlikePhoto(result.id) 
-        } else {
-          const nextPage = await api.getFavourites(user.username, page + 1)
-          await api.unlikePhoto(result.id) 
-          resultsDispatch({ type: 'RESULT_REMOVE_FAVOURITE', payload: result.id})
-          if(nextPage.length)
-            resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload: nextPage })
-        }
-      } catch(e) {
-        console.warn(e)
-      }
+      unlikePhoto()
     }
-    
   }
 
   return (
@@ -60,7 +76,7 @@ const ResultCard =  ({ result, isFavourites, page }) => {
           onClick={handleFave}
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 24 24"
-          className={`${clicked ? 'clicked' : null} ${faved ? 'faved' : null}`}
+          className={`${clicked ? 'clicked' : null} ${result.liked_by_user ? 'faved' : null}`}
         >
           <path 
             d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"

@@ -1,4 +1,4 @@
-const resultsDefaultState = {
+const initialState = {
   error: null,
   loading: false,
   results: [],
@@ -41,6 +41,15 @@ const resultsReducer = (state,{type, payload}) => {
         results: state.results.filter(r => r.id !== payload)
       }
     }
+    case 'RESULT_SET_FAVOURITE': {
+      return {
+        ...state,
+        results: state.results.map(r => r.id === payload.id 
+          ? { ...r, liked_by_user: payload.value }  
+          : r
+        )
+      }
+    }
     case 'RESULTS_APPEND_ONE': {
       return {
         ...state,
@@ -60,4 +69,4 @@ const resultsReducer = (state,{type, payload}) => {
 }
 
 export default resultsReducer
-export { resultsDefaultState }
+export { initialState }
