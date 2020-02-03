@@ -2,7 +2,7 @@ import React from 'react'
 
 import SmallCaps from '../common/SmallCaps'
 
-const ResultsTitle = ({ searchQuery, isFavorites }) => {
+const ResultsTitle = ({ searchQuery, isFavourites }) => {
   const render = (text) => (
     <SmallCaps>
       {text}
@@ -10,7 +10,7 @@ const ResultsTitle = ({ searchQuery, isFavorites }) => {
   )
   
   if(searchQuery) return render(`Search Results: ${searchQuery}`)
-  if(isFavorites) return render('My Favorites')
+  if(isFavourites) return render('My Favourites')
   return render('Latest Photos')
 }
 

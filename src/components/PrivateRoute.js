@@ -6,8 +6,6 @@ import Context from '../store/Context'
 const PrivateRoute = ({ children, enableRedirects, ...rest }) => {
   const { user: { state: user } } = useContext(Context)  
 
-  console.log(user)
-
   // Just a basic example to implement redirects
   // Would need to check in with server for a real world, secure example
 

@@ -13,10 +13,7 @@ import ResultsTitle from './ResultsTitle'
 import Pagination from './Pagination'
 
 const Results = props => {
-  const { 
-    results: { state, dispatch }, 
-    user: { state: user } 
-  } = useContext(Context)
+  const { results: { state } } = useContext(Context)
 
   const history = useHistory()
   
@@ -24,15 +21,15 @@ const Results = props => {
     error, 
     loading, 
     results, 
-    totalPages 
+    totalPages,
+    hasLoadedInitialResults
   } = state
 
   const {
-    initialized,
     page,
     searchQuery,
     pathname,
-    isFavorites
+    isFavourites
   } = useGetResults()
 
   const handleChangePage = (change) => {
@@ -46,31 +43,41 @@ const Results = props => {
   }
 
   // TODO: This is a quick fix, improve how I'm getting height
-  if(loading) return (<Loading height={results.length ? '1591' : undefined}/>) 
   if(error) return (<Error error={error} />)
-  if(!initialized) return null
+  if(loading || !hasLoadedInitialResults) return (
+    <Loading height={hasLoadedInitialResults ? '1591' : undefined}/>
+  ) 
   
   return (
     <Section>
       <ResultsTitle
-        isFavorites={isFavorites}
+        isFavourites={isFavourites}
         searchQuery={searchQuery}
       />
-      <ResultsContainer>
-        {results.map(r => 
-          <ResultCard 
-            result={r}  
-            key={r.id} 
-            isFavorites={isFavorites}
-            page={page}
-          />)}
-      </ResultsContainer>
+      {results.length ? (
+        <ResultsContainer>
+          {results.map(r => 
+            <ResultCard 
+              result={r}  
+              key={r.id} 
+              isFavourites={isFavourites}
+              page={page}
+            />)}
+        </ResultsContainer>
+      ) : (
+        <Error 
+          error={`Looks like there aren't any results here`} 
+          height='300'  
+        />
+      )}
+      
       <Pagination 
         page={page}
         totalPages={totalPages}
         searchQuery={searchQuery}
         pathname={pathname}
         handleChangePage={handleChangePage}
+        pageLength={results.length}
       />
     </Section>
   )

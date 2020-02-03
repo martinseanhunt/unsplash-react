@@ -1,8 +1,7 @@
-import react from 'react'
 import styled from 'styled-components'
 
 const SmallCaps = styled.span`
-  margin-top: 80px;
+  margin: 80px 0 0 0;
   font-size: 12px;
   letter-spacing: 2px;
   line-height: 1.5;

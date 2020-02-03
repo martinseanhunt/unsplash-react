@@ -4,9 +4,7 @@ import styled, { keyframes } from 'styled-components'
 import api from '../../util/api'
 import Context from '../../store/Context'
 
-// TODO: Refactor heart in to own component
-
-const ResultCard =  ({ result, isFavorites, page }) => {
+const ResultCard =  ({ result, isFavourites, page }) => {
   const { user: { state: user }, results: { dispatch: resultsDispatch } } = useContext(Context)
   const [clicked, setClicked] = useState()
   const [faved, setFaved] = useState(result.liked_by_user)
@@ -20,26 +18,32 @@ const ResultCard =  ({ result, isFavorites, page }) => {
     return () => clearTimeout(id)
   }, [clicked])
 
-  const handleFave = () => {
+  const handleFave = async () => {
     setClicked(true)
     setFaved(f => !f)
 
     if(!faved) {
-      api.likePhoto(result.id) 
-        .then(res => console.log(res))
-        .catch(e => console.log(e))
+      try {
+        await api.likePhoto(result.id) 
+      } catch(e) {
+        console.warn(e)
+      } 
     } else {
-      if(isFavorites) setRemoveFromPage(true)
-      api.unlikePhoto(result.id) 
-        .then(res => {
-          if(!isFavorites) return 
-          return api.getFavorites(user.username, page + 1)
-        }).then((payload) => {
-          resultsDispatch({ type: 'RESULT_REMOVE_FAVORITE', payload: result.id})
-          if(payload.length)
-            resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload })          
-        })
-        .catch(e => console.log(e))
+      if(isFavourites) setRemoveFromPage(true)
+      
+      try {
+        if(!isFavourites) {
+          await api.unlikePhoto(result.id) 
+        } else {
+          const nextPage = await api.getFavourites(user.username, page + 1)
+          await api.unlikePhoto(result.id) 
+          resultsDispatch({ type: 'RESULT_REMOVE_FAVOURITE', payload: result.id})
+          if(nextPage.length)
+            resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload: nextPage })
+        }
+      } catch(e) {
+        console.warn(e)
+      }
     }
     
   }
@@ -75,11 +79,6 @@ const pulse = keyframes`
   20%, 60%  { transform: scale(1.2) }
 `
 
-const singlePulse = keyframes`
-  0%, 100% { transform: scale(1) }
-  50% { transform: scale(1.2) }
-`
-
 const Card = styled.div`
   width: 33.3%;
   height: 300px;
@@ -113,12 +112,11 @@ const Card = styled.div`
     height; 40px;
     overflow: visible;
     cursor: pointer;
-    path {
-      transition: fill, stroke 0.2s;
-    }
 
     &:hover {
-      animation: ${singlePulse} 0.2s;
+      path {
+        fill: rgba(255,0,0,0.5);
+      }
     }
 
     &.clicked {

@@ -27,7 +27,7 @@ const Error = props => {
 }
 
 const LoadingInner = styled.div`
-  height: ${({ height }) => height ? `${height}px` : 'calc(100vh - 467px)'}; // TODO get dynamically
+  height: ${({ height }) => height ? `${height}px` : 'calc(100vh - 500px)'}; // TODO get dynamically
   display: flex;
   justify-content: center;
   align-items: center;

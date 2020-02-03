@@ -3,6 +3,7 @@ const resultsDefaultState = {
   loading: false,
   results: [],
   totalPages: null,
+  hasLoadedInitialResults: false
 }
 
 const resultsReducer = (state,{type, payload}) => {
@@ -23,16 +24,18 @@ const resultsReducer = (state,{type, payload}) => {
         totalPages: payload.total_pages,
         loading: false,
         error: null,
+        hasLoadedInitialResults: true
       }
-    case 'SET_RESULTS_FAVORITES':
+    case 'SET_RESULTS_FAVOURITES':
       return {
         ...state,
         results: isSearch ? payload.results : payload,
         totalPages: payload.total_pages,
         loading: false,
         error: null,
+        hasLoadedInitialResults: true
       }
-    case 'RESULT_REMOVE_FAVORITE': {
+    case 'RESULT_REMOVE_FAVOURITE': {
       return {
         ...state,
         results: state.results.filter(r => r.id !== payload)

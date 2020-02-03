@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import SmallCaps from '../common/SmallCaps'
 
-const Pagination = ({ page, totalPages, handleChangePage }) => {
+const Pagination = ({ page, totalPages, handleChangePage, pageLength }) => {
   return (
     <PaginationContainer>
       {page > 1 && 
@@ -14,7 +14,7 @@ const Pagination = ({ page, totalPages, handleChangePage }) => {
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
         </button>
       }
-      {((page < totalPages) || !totalPages) && 
+      {(((page < totalPages) || !totalPages) && pageLength >= 12) && 
         <button 
           onClick={() => handleChangePage(1)}
           className="next"
@@ -23,9 +23,9 @@ const Pagination = ({ page, totalPages, handleChangePage }) => {
         </button>
       }
       {totalPages && 
-        <SmallCaps>
+        <PagesCount>
           {`page ${page} of ${totalPages}`}
-        </SmallCaps>
+        </PagesCount>
       }
     </PaginationContainer>
   )
@@ -39,6 +39,7 @@ const PaginationContainer = styled.div`
   justify-content: center;
   text-align: center;
   position: relative;
+  flex-direction: column;
 
   button {
     background: none;
@@ -74,21 +75,10 @@ const PaginationContainer = styled.div`
     }
   }
 
-  span {
-    width: 100%;
-    font-size: 12px;
-    letter-spacing: 2px;
-    line-height: 1.5;
-    text-transform: uppercase;
-    color: #717171;
-    font-weight: 400;
-    margin: 0 0 40px;
-    margin-top: 50px;
-  }
 `
 
 const PagesCount = styled(SmallCaps)`
-
+  margin: 0;
 `
 
 export default Pagination

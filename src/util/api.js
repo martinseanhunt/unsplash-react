@@ -22,13 +22,13 @@ const getProfile = async () => {
   return res
 }
 
-const getFavorites = async (user, page = 1, perPage = 12) => {
+const getFavourites = async (user, page = 1, perPage = 12) => {
   const url = `${BASE_URL}users/${user}/likes?page=${page}&per_page=${perPage}`
   const res = await sendRequest(url)
   return res
 }
 
-const getAuthToken = async code => {
+const getJWT = async code => {
   const url = `${SERVER_URL}gettoken/${code}`
   const res = await sendRequest(url)
   return res
@@ -70,9 +70,9 @@ const sendRequest = async (url, options = {}) => {
 export default {
   searchImages,
   getImages,
-  getAuthToken,
+  getJWT,
   getProfile,
   likePhoto,
-  getFavorites,
+  getFavourites,
   unlikePhoto
 }

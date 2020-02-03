@@ -9,7 +9,7 @@ const userReducer =(state,{type, payload}) => {
       return {
         ...state,
         hasCheckedAuth: true,
-        error: null
+        loading: false
       }
     case 'SET_USER_PROFILE': 
       return {
@@ -26,13 +26,13 @@ const userReducer =(state,{type, payload}) => {
       }
     case 'SET_USER_ERROR':
       return {
-        hasCheckedAuth: false,
         error: payload,
         loading: false
       }
     case 'USER_LOGOUT':
       return {
-        hasCheckedAuth: true
+        hasCheckedAuth: true,
+        error: null
       }
     default:
       return state

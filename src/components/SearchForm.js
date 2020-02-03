@@ -28,7 +28,7 @@ const Form = styled.form`
   opacity: 0.9;
 
   input, button {
-    border: 1px solid ${p => p.theme.colors.opaqueGrey};
+    border: 2px solid ${p => p.theme.colors.opaqueGrey};
     background: ${p => p.theme.colors.white};
 
     // Wouldn't do this in the real world (A11Y)
@@ -36,18 +36,19 @@ const Form = styled.form`
   }
 
   input {
-    padding: 15px 25px;
+    padding: 19px 25px;
     width: 325px;
+    font-size: 1.5rem;
   }
 
   button {
-    width: 95px;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 15px 0;
+    padding: 20px 25px;
     text-align: center;
     border-left: none;
     cursor: pointer;
+    font-size: 1.3rem;
   }
 `
 

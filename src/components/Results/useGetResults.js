@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import api from '../../util/api'
@@ -7,11 +7,10 @@ import useQuery from '../../util/useQuery'
 
 const useGetResults = () => {
   const { results: { dispatch }, user: { state: user } } = useContext(Context)
-  const [initialized, setInitialized] = useState(false)
-  
+
   const { pathname } = useLocation()
   const query = useQuery()
-  const isFavorites = pathname.includes('/favorites')
+  const isFavourites = pathname.includes('/favourites')
 
   const page = parseInt(query.get('page')) || 1
   const searchQuery = query.get('query')
@@ -19,38 +18,41 @@ const useGetResults = () => {
   const { id: userId, username } = user
 
   useEffect(() => {
-    const getFavorites = async () => {
-      const payload = await api.getFavorites(username, page)
-      dispatch({ type: 'SET_RESULTS_FAVORITES', payload })
+    const getFavourites = async () => {
+      try {
+        const payload = await api.getFavourites(username, page)
+        dispatch({ type: 'SET_RESULTS_FAVOURITES', payload })
+      } catch(e) {
+        handleError(e)
+      }
     }
 
     const searchImages = async () => {
-      const payload = await api.searchImages(searchQuery, page)
-      dispatch({ type: 'SET_RESULTS_RESULTS', payload })
+      try {
+        const payload = await api.searchImages(searchQuery, page)
+        dispatch({ type: 'SET_RESULTS_RESULTS', payload })
+      } catch(e) {
+          handleError(e)
+      }
     }
+
+    const handleError = e => dispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
     
     dispatch({ type: 'SET_RESULTS_LOADING' })
 
-    try {
-      if(isFavorites && userId){
-        getFavorites()
-      } else {
-        searchImages()
-      } 
-    } catch(e) {
-      console.error(e)
-      dispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
-    }   
+    if(isFavourites && userId){
+      getFavourites()
+    } else {
+      searchImages()
+    } 
     
-    setInitialized(true)
-  },[page, searchQuery, dispatch, pathname, userId, username, isFavorites])
+  },[page, searchQuery, dispatch, pathname, userId, username, isFavourites])
 
   return {
-    initialized,
     page,
     searchQuery,
     pathname,
-    isFavorites
+    isFavourites
   }
 }
 
