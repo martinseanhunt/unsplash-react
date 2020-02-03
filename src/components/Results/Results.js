@@ -1,70 +1,50 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import api from '../../util/api'
-import useQuery from '../../util/useQuery'
 import Context from '../../store/Context'
+import useGetResults from './useGetResults'
+
 import Section from '../layout/Section'
 import ResultCard from './ResultCard'
 import Loading from '../Loading'
 import Error from '../Error'
 
 const Results = props => {
-  const { results: { state, dispatch }, user: { state: user } } = useContext(Context)
-  const { error, loading, results, totalPages } = state
-
-  // TODO cehck if this works when we're being rate limited
-  const [hideRender, setHideRender] = useState(true)
-
-  const { pathname } = useLocation()
   const history = useHistory()
-  const query = useQuery()
+  const { 
+    results: { state, dispatch }, 
+    user: { state: user } 
+  } = useContext(Context)
+  
+  const { 
+    error, 
+    loading, 
+    results, 
+    totalPages 
+  } = state
 
-  const page = parseInt(query.get('page')) || 1
-  const searchQuery = query.get('query')
-
-  const isFavorites = pathname.includes('/favorites')
-
-  // TODO: Think about whether this is the best approach... Is it good to 
-  // Use a hook here and allow this to update itself whenever the relevant state
-  // changes since it can be changed from here or other components
-  useEffect(() => {
-    dispatch({ type: 'SET_RESULTS_LOADING' })
-    setHideRender(false)
-
-    if(isFavorites && user.id) {
-      api.getFavorites(user.username, page)
-      .then(payload => {
-        dispatch({ type: 'SET_RESULTS_FAVORITES', payload })
-      })
-      .catch(e => {
-        console.error(e)
-        dispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
-      })
-    } else {
-      api.searchImages(searchQuery, page)
-      .then(payload => {
-        dispatch({ type: 'SET_RESULTS_RESULTS', payload })
-      })
-      .catch(e => {
-        console.error(e)
-        dispatch({ type: 'SET_RESULTS_ERROR', payload: e.message })
-      })
-    }
-  },[page, searchQuery, dispatch, pathname, user, isFavorites])
+  const {
+    initialized,
+    page,
+    searchQuery,
+    pathname,
+    isFavorites
+  } = useGetResults()
 
   const handleChangePage = (change) => {
     window.scrollTo({
-      top: 486, // TODO: This is a lame quick fix... Could do this dynamically
+      // TODO: This is a quick fix... Improve getting top value
+      top: 486, 
       behavior: 'smooth'
     })
     history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
   }
 
-  if(loading) return (<Loading height={results.length ? '1591' : undefined}/>) // TODO: This is a lame quick fix... Could do this dynamically
+  // TODO: This is a quick fix, improve how I'm getting height
+  if(loading) return (<Loading height={results.length ? '1591' : undefined}/>) 
   if(error) return (<Error error={error} />)
-  if(hideRender) return <span></span>
+  if(!initialized) return <span></span>
   
   return (
     <Section>
