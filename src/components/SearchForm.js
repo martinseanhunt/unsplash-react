@@ -26,6 +26,7 @@ const SearchForm = props => {
 
 const Form = styled.form`
   opacity: 0.9;
+  display: flex;
 
   input, button {
     border: 2px solid ${p => p.theme.colors.opaqueGrey};
@@ -33,6 +34,10 @@ const Form = styled.form`
 
     // Wouldn't do this in the real world (A11Y)
     &:focus { outline: none; }
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   input {
