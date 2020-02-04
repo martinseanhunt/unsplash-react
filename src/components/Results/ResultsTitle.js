@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SmallCaps from '../common/SmallCaps'
+import SmallCaps from '../common/styles/SmallCaps'
 
 const ResultsTitle = ({ searchQuery, isFavourites }) => {
   const render = (text) => (

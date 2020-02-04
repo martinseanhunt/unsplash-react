@@ -1,21 +1,18 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
-import Context from '../store/Context'
+import { useUserContext } from '../context/user/UserContext'
+import Loading from './common/Loading'
 
-const PrivateRoute = ({ children, enableRedirects, ...rest }) => {
-  const { user: { state: user } } = useContext(Context)  
-
-  // Just a basic example to implement redirects
-  // Would need to check in with server for a real world, secure example
+const PrivateRoute = ({ children, ...rest }) => {
+  const { state: user } = useUserContext()
 
   return (
     <Route
       {...rest}
       render={({ location }) => {
-        if(!user.hasCheckedAuth) {
-          return <div>Authenticating...</div>
-        }
+        if(!user.hasCheckedAuth) return <Loading text='Authenticating' />
+        
         return (user.id && localStorage.token) ? (
           children
         ) : (
