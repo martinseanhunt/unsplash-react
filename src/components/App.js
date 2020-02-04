@@ -6,7 +6,7 @@ import { useUserContext } from '../context/user/UserContext'
 import useAuthenticate from '../hooks/useAuthenticate'
 
 import Header from './Header/Header'
-import Footer from './Footer'
+import Footer from './Footer/Footer'
 import Results from './Results/Results'
 import Loading from './common/Loading'
 import Error from './common/Error'

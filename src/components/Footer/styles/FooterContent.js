@@ -1,20 +1,4 @@
-import React from 'react'
 import styled from 'styled-components'
-
-import Section from './layout/Section'
-
-const Footer = (props) => {
-  return(
-    <footer>
-      <Section>
-        <FooterContent>
-          <div></div>
-          <span>martinseanhunt@gmail.com</span>
-        </FooterContent>
-      </Section>
-    </footer>
-  )
-}
 
 const FooterContent = styled.div`
   padding: 80px 0;
@@ -33,4 +17,4 @@ const FooterContent = styled.div`
   }
 `
 
-export default Footer
+export default FooterContent

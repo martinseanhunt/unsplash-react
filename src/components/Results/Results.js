@@ -5,13 +5,14 @@ import api from '../../api/api'
 import { useUserContext } from '../../context/user/UserContext'
 import { useResultsContext } from '../../context/results/ResultsContext'
 import useGetResults from '../../hooks/useGetResults'
-import theme from '../../styles/theme'
+import theme from '../../globalstyles/theme'
 
 import Section from '../layout/Section'
 import Loading from '../common/Loading'
 import Error from '../common/Error'
 import ResultsTitle from './ResultsTitle'
-import ResultsList from './ResultsList/ResultsList'
+import ResultsContainer from './styles/ResultsContainer'
+import ResultCard from './ResultCard/ResultCard'
 import Pagination from './Pagination/Pagination'
 
 const Results = props => {
@@ -92,14 +93,19 @@ const Results = props => {
         searchQuery={searchQuery}
       />
       {results.length ? (
-        <ResultsList 
-          results={results}
-          isFavourites={isFavourites}
-          page={page}
-          user={user}
-          handleLikePhoto={handleLikePhoto}
-          handleUnlikePhoto={handleUnlikePhoto}
-        />
+        <ResultsContainer>
+          {results.map(r => 
+            <ResultCard 
+              result={r}  
+              key={r.id} 
+              isFavouritesPage={isFavourites}
+              page={page}
+              handleLikePhoto={handleLikePhoto}
+              handleUnlikePhoto={handleUnlikePhoto}
+              user={user}
+            />
+          )}
+        </ResultsContainer>
       ) : (
         <Error 
           error={`Looks like there aren't any results here`} 

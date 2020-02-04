@@ -1,32 +1,9 @@
-import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
-
-const SearchForm = props => {
-  const [inputValue, setInputValue] = useState('')
-  const history = useHistory()
-  
-  const handleSubmit = async e => {
-    e.preventDefault()
-    history.push(`/?page=1&query=${inputValue}`)
-  }
-
-  return (
-    <Form onSubmit={handleSubmit}>
-      <input 
-        name="search" 
-        type="text" 
-        placeholder="Find images of..."
-        onChange={e => setInputValue(e.target.value)}  
-      />
-      <button>Search</button>
-    </Form>
-  )
-}
 
 const Form = styled.form`
   opacity: 0.9;
   display: flex;
+  justify-content: center;
 
   input, button {
     border: 2px solid ${p => p.theme.colors.opaqueGrey};
@@ -44,6 +21,7 @@ const Form = styled.form`
     padding: 19px 25px;
     width: 325px;
     font-size: 1.5rem;
+    min-width: 0;
   }
 
   button {
@@ -54,7 +32,14 @@ const Form = styled.form`
     border-left: none;
     cursor: pointer;
     font-size: 1.3rem;
+
+    @media (max-width: ${({theme}) => theme.breakPoints.s}px) {
+      font-size: 1.1rem;   
+      padding: 20px; 10px;
+    }
   }
+
+  
 `
 
-export default SearchForm
+export default Form

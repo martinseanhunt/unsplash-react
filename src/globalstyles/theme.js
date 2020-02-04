@@ -39,7 +39,11 @@
   layout: {
     maxWidth: '1250px',
     widthPercent: '85%',
-    headerHight: 465
+    headerHight: 465,
+  },
+  breakPoints: {
+    s: 490,
+    m: 938
   }
 }
 

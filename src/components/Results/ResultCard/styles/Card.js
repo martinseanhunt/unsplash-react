@@ -8,15 +8,34 @@ const Card = styled.div`
   position: relative;
   transition: opacity 1s;
 
-  &.remove {
-    opacity: 0;
+  @media (min-width: ${({theme}) => theme.breakPoints.m + 1}px) {
+    &:nth-child(3n) {
+      padding-right: 0;
+      svg {
+        right: 13px;
+      }
+    }
   }
 
-  &:nth-child(3n) {
-    padding-right: 0;
-    svg {
-      right: 13px;
+  @media (max-width: ${({theme}) => theme.breakPoints.m}px) {
+    width: 50%;
+    padding-right: 20px;
+
+    &:nth-child(2n) {
+      padding-right: 0;
+      svg {
+        right: 13px;
+      }
     }
+  }
+
+  @media (max-width: ${({theme}) => theme.breakPoints.s}px) {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  &.remove {
+    opacity: 0;
   }
 
   img {

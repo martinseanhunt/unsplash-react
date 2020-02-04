@@ -24,6 +24,7 @@ const Section = styled.div`
   color: ${p => (p.lightText || p.randomBackgroundColor) ? p.theme.colors.white : 'inheret'};
   display: flex;
   justify-content: center;
+  overflow: hidden;
 `
 
 export default props => (
