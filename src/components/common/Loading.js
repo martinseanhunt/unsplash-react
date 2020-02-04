@@ -5,7 +5,6 @@ import MessageContainer from './styles/MessageContainer'
 
 const Loading = props => {
   const [loadingDots, setLoadingDots] = useState('')
-  console.log(props.height)
   
   useEffect(() => {
     const id = setInterval(() => {

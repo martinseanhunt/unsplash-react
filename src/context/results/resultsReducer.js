@@ -3,7 +3,8 @@ const initialState = {
   loading: false,
   results: [],
   totalPages: null,
-  hasLoadedInitialResults: false
+  hasLoadedInitialResults: false,
+  modal: null
 }
 
 const resultsReducer = (state,{type, payload}) => {
@@ -62,6 +63,16 @@ const resultsReducer = (state,{type, payload}) => {
         loading: false,
         results: [],
         error: payload,
+      }
+    case 'OPEN_MODAL':
+      return {
+        ...state,
+        modal: state.results.find(r => r.id === payload)
+      }
+    case 'CLOSE_MODAL':
+      return {
+        ...state,
+        modal: null
       }
     default:
       return state

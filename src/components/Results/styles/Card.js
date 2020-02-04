@@ -6,7 +6,12 @@ const Card = styled.div`
   padding-right: 20px;
   padding-top: 20px;
   position: relative;
-  transition: opacity 1s;
+  transition: opacity 1s, transform 0.2s;
+
+  &:hover {
+    transform: scale(1.015);
+    cursor: pointer;
+  }
 
   @media (min-width: ${({theme}) => theme.breakPoints.m + 1}px) {
     &:nth-child(3n) {

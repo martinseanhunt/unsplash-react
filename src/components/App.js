@@ -10,6 +10,7 @@ import Footer from './Footer/Footer'
 import Results from './Results/Results'
 import Loading from './common/Loading'
 import Error from './common/Error'
+import Modal from './Modal/Modal'
 
 const App = () => {
   useAuthenticate()
@@ -35,6 +36,7 @@ const App = () => {
         fallbackComponent
       )}
       <Footer />
+      <Modal />
     </>
   )
 }

@@ -70,6 +70,10 @@ const Results = props => {
     }
   }
 
+  const openModal = (resultId) => {
+    resultsDispatch({ type: 'OPEN_MODAL', payload: resultId })
+  }
+
   const handleChangePage = (change) => {    
     history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
     setTimeout(() => {
@@ -117,6 +121,7 @@ const Results = props => {
                 handleLikePhoto={handleLikePhoto}
                 handleUnlikePhoto={handleUnlikePhoto}
                 user={user}
+                openModal={openModal}
               />
             )}
           </ResultsContainer>

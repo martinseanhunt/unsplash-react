@@ -8,7 +8,8 @@ const ResultCard =  ({
   isFavouritesPage, 
   handleLikePhoto,
   handleUnlikePhoto,
-  user
+  user,
+  openModal
 }) => {
   const [clickedFave, setClickedFave] = useState()
   const [removeFromPage, setRemoveFromPage] = useState(false)
@@ -38,6 +39,7 @@ const ResultCard =  ({
       <img 
         src={result.urls.small} 
         alt={result.description || `${result.user.username}'s photo`} 
+        onClick={() => openModal(result.id)}
       />
 
       {user.id && (
