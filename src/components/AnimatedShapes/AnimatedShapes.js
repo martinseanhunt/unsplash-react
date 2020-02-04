@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 
 import ImageContainer from './styles/ImageContainer'
 
 const AnimatedShapes = props => {
-  // TODO: update width and height on window resize
-  const clientWidth = React.useRef(document.body.clientWidth)
-  const clientHeight = React.useRef(document.body.clientHeight)
-  const images = React.useRef()
+  const [clientWidth, setClientWidth]= useState(window.innerWidth)
+  const [clientHeight, setCleintHeight] = useState(window.innerHeight)
+  const images = useRef()
   const { listenOnElementId } = props
 
   // TODO: set these dynamically based on screen width
@@ -23,17 +22,17 @@ const AnimatedShapes = props => {
       : window
 
     const rect = images.current.getBoundingClientRect()
-    const centerOfClientX = clientWidth.current / 2
+    const centerOfClientX = clientWidth / 2
     const centerOfElementX = rect.x + (rect.width / 2)
     const offsetX = centerOfClientX - centerOfElementX
 
     const centerOfElementY = rect.y + (rect.height / 2)
-    const centerOfClientY = clientHeight.current / 2
+    const centerOfClientY = clientHeight / 2
     const offsetY = centerOfClientY - centerOfElementY
  
     const rotateImages = ({clientX, clientY}) => {
-      const xPercent = ((clientX + offsetX) / clientWidth.current) * 100
-      const yPercent = ((clientHeight.current - (clientY + offsetY)) / clientHeight.current) * 100 
+      const xPercent = ((clientX + offsetX) / clientWidth) * 100
+      const yPercent = ((clientHeight - (clientY + offsetY)) / clientHeight) * 100 
       
       const xDegrees = (xPercent - 50) / (50 / maxDegreesX)
       const yDegrees = (yPercent - 50) / (50 / maxDegreesY)
@@ -45,13 +44,27 @@ const AnimatedShapes = props => {
         `)
       })
     }
+
+    let timeOut
+    const handleResize = () => {
+      clearTimeout(timeOut)
+      timeOut = setTimeout(() => {
+        setClientWidth(window.innerWidth)
+        setCleintHeight(window.innerHeight)
+      }, 500)
+    }
   
     const handleMouseMove = e => window.requestAnimationFrame(() => rotateImages(e))  
     
     listenOn.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('resize', handleResize)
 
-    return () => listenOn.removeEventListener('mousemove', handleMouseMove)
-  }, [listenOnElementId, maxDegreesX, maxDegreesY])
+    return () => {
+      listenOn.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(timeOut)
+    }
+  }, [listenOnElementId, maxDegreesX, maxDegreesY, clientHeight, clientWidth])
   
   return (
     <ImageContainer {...props} ref={images}>
