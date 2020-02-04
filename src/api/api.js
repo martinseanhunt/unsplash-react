@@ -1,4 +1,3 @@
-// TODO: move to .env
 const BASE_URL =  process.env.REACT_APP_UNSPLASH_URL
 const CLIENT_ID = process.env.REACT_APP_UNSPLASH_API
 const SERVER_URL = process.env.REACT_APP_SERVER_URL

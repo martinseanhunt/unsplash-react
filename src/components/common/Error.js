@@ -3,8 +3,6 @@ import React from 'react'
 import Section from '../layout/Section'
 import MessageContainer from './styles/MessageContainer'
 
-// TODO: share style with loading
-
 const Error = (props) => {
   const { error, noStyle } = props
 

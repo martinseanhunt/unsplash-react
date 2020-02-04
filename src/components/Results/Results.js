@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import api from '../../api/api'
@@ -12,13 +12,16 @@ import Loading from '../common/Loading'
 import Error from '../common/Error'
 import ResultsTitle from './ResultsTitle'
 import ResultsContainer from './styles/ResultsContainer'
-import ResultCard from './ResultCard/ResultCard'
-import Pagination from './Pagination/Pagination'
+import ResultCard from './ResultCard'
+import Pagination from './Pagination'
 
 const Results = props => {
   const history = useHistory()
   const { state, dispatch: resultsDispatch } = useResultsContext()
   const { state: user } = useUserContext()
+
+  const resultsContainerRef = useRef()
+  const [loadedResultsHeight, setLoadedResultsHeight] = useState()
   
   const { 
     error, 
@@ -67,9 +70,8 @@ const Results = props => {
     }
   }
 
-  const handleChangePage = (change) => {
+  const handleChangePage = (change) => {    
     const scrollTo = theme.layout.headerHight - 50
-
     if(window.pageYOffset > scrollTo) {
       window.scrollTo({
         top: scrollTo, 
@@ -77,15 +79,27 @@ const Results = props => {
       })
     }
     
-    history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
+    setTimeout(() => {
+      history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
+    }, 250) 
   }
 
-  // TODO: This is a quick temp solution, improve how I'm getting height
-  if(error) return (<Error error={error} />)
+  useEffect(() => {
+    if(results.length && resultsContainerRef.current) 
+      setLoadedResultsHeight(resultsContainerRef.current.offsetHeight)
+  }, [results, setLoadedResultsHeight, resultsContainerRef])
+
+
+  if(error) return <Error error={error} />
   if(loading || !hasLoadedInitialResults) return (
-    <Loading height={hasLoadedInitialResults ? '1591' : undefined}/>
+    <Loading 
+      height={hasLoadedInitialResults 
+        ? loadedResultsHeight 
+        : undefined
+      }
+    />
   ) 
-  
+
   return (
     <Section>
       <ResultsTitle
@@ -93,7 +107,7 @@ const Results = props => {
         searchQuery={searchQuery}
       />
       {results.length ? (
-        <ResultsContainer>
+        <ResultsContainer ref={resultsContainerRef}>
           {results.map(r => 
             <ResultCard 
               result={r}  

@@ -4,7 +4,7 @@ import ImageContainer from './styles/ImageContainer'
 
 const AnimatedShapes = props => {
   const [clientWidth, setClientWidth]= useState(window.innerWidth)
-  const [clientHeight, setCleintHeight] = useState(window.innerHeight)
+  const [clientHeight, setCleintHeight] = useState(document.body.clientHeight)
   const images = useRef()
   const { listenOnElementId } = props
 
@@ -50,7 +50,7 @@ const AnimatedShapes = props => {
       clearTimeout(timeOut)
       timeOut = setTimeout(() => {
         setClientWidth(window.innerWidth)
-        setCleintHeight(window.innerHeight)
+        setCleintHeight(document.body.clientHeight)
       }, 500)
     }
   

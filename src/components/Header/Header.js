@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 import Section from '../layout/Section'
 import AnimatedShapes from '../AnimatedShapes/AnimatedShapes'
-import SearchForm from './SearchForm/SearchForm'
-import MenuBar from './MenuBar/MenuBar'
+import SearchForm from './SearchForm'
+import MenuBar from './MenuBar'
 import HeaderContent from './styles/HeaderContent'
 import FormContainer from './styles/FormContainer'
 
@@ -21,8 +21,8 @@ const Header = (props) => {
           <BannerShapes 
             width='325'
             height='325'
-            maxDegreesY='30'
-            maxDegreesX='60'
+            maxDegreesY='40'
+            maxDegreesX='70'
           />
 
           <FormContainer>

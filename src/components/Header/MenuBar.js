@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-import { useUserContext } from '../../../context/user/UserContext'
-import Loading from '../../common/Loading'
+import { useUserContext } from '../../context/user/UserContext'
+import Loading from '../common/Loading'
 import Bar from './styles/Bar'
 
 const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent(process.env.REACT_APP_FRONTEND_URL)}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
