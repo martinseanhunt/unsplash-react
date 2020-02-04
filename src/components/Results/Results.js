@@ -1,20 +1,23 @@
 import React from 'react'
-import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
+import api from '../../api/api'
+import { useUserContext } from '../../context/user/UserContext'
 import { useResultsContext } from '../../context/results/ResultsContext'
 import useGetResults from '../../hooks/useGetResults'
+import theme from '../../styles/theme'
 
 import Section from '../layout/Section'
-import ResultCard from './ResultCard'
-import Loading from '../Loading'
-import Error from '../Error'
+import Loading from '../common/Loading'
+import Error from '../common/Error'
 import ResultsTitle from './ResultsTitle'
-import Pagination from './Pagination'
+import ResultsList from './ResultsList/ResultsList'
+import Pagination from './Pagination/Pagination'
 
 const Results = props => {
   const history = useHistory()
-  const { state } = useResultsContext()
+  const { state, dispatch: resultsDispatch } = useResultsContext()
+  const { state: user } = useUserContext()
   
   const { 
     error, 
@@ -31,17 +34,52 @@ const Results = props => {
     isFavourites
   } = useGetResults()
 
+  const handleLikePhoto = async (resultId) => {
+    try {
+      await api.likePhoto(resultId)
+      resultsDispatch({ 
+        type: 'RESULT_SET_FAVOURITE', 
+        payload: { id: resultId, value: true } 
+      })
+    } catch(e) {
+      console.warn(e)
+    } 
+  }
+
+  const handleUnlikePhoto = async (resultId) => {
+    try {
+      if(!isFavourites) {
+        await api.unlikePhoto(resultId) 
+        resultsDispatch({ 
+          type: 'RESULT_SET_FAVOURITE', 
+          payload: { id: resultId, value: false } 
+        })
+      } else {
+        const nextPage = await api.getFavourites(user.username, page + 1)
+        await api.unlikePhoto(resultId) 
+        resultsDispatch({ type: 'RESULT_REMOVE_FAVOURITE', payload: resultId})
+        if(nextPage.length)
+          resultsDispatch({ type: 'RESULTS_APPEND_ONE', payload: nextPage })
+      }
+    } catch(e) {
+      console.warn(e)
+    }
+  }
+
   const handleChangePage = (change) => {
-    // TODO: This is a quick fix... Improve getting top value
-    // TODO: This will break on huge screens 
-    window.scrollTo({
-      top: 486, 
-      behavior: 'smooth'
-    })
+    const scrollTo = theme.layout.headerHight - 50
+
+    if(window.pageYOffset > scrollTo) {
+      window.scrollTo({
+        top: scrollTo, 
+        behavior: 'smooth'
+      })
+    }
+    
     history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
   }
 
-  // TODO: This is a quick fix, improve how I'm getting height
+  // TODO: This is a quick temp solution, improve how I'm getting height
   if(error) return (<Error error={error} />)
   if(loading || !hasLoadedInitialResults) return (
     <Loading height={hasLoadedInitialResults ? '1591' : undefined}/>
@@ -54,15 +92,14 @@ const Results = props => {
         searchQuery={searchQuery}
       />
       {results.length ? (
-        <ResultsContainer>
-          {results.map(r => 
-            <ResultCard 
-              result={r}  
-              key={r.id} 
-              isFavourites={isFavourites}
-              page={page}
-            />)}
-        </ResultsContainer>
+        <ResultsList 
+          results={results}
+          isFavourites={isFavourites}
+          page={page}
+          user={user}
+          handleLikePhoto={handleLikePhoto}
+          handleUnlikePhoto={handleUnlikePhoto}
+        />
       ) : (
         <Error 
           error={`Looks like there aren't any results here`} 
@@ -81,11 +118,5 @@ const Results = props => {
     </Section>
   )
 }
-
-const ResultsContainer = styled.div`
-  margin-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-`
 
 export default Results

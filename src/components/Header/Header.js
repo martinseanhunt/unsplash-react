@@ -1,20 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Section from './layout/Section'
-import AnimatedShapes from './AnimatedShapes'
+import Section from '../layout/Section'
+import AnimatedShapes from '../AnimatedShapes/AnimatedShapes'
 import SearchForm from './SearchForm'
 import MenuBar from './MenuBar'
 
 const Header = (props) => {
   return(
     <header id="header">
-      <MenuBar />
       <Section 
         backgroundColor='bluePurple'
         lightText
       >
+        <MenuBar />
         <HeaderContent>
+
           <BannerShapes 
             width='325'
             height='325'
@@ -33,8 +34,8 @@ const Header = (props) => {
 }
 
 const HeaderContent = styled.div`
-  height: 430px;
-  padding-top: 30px;
+  height: ${({theme}) => theme.layout.headerHight}px;
+  padding-top: 65px;
   justify-content: flex-start;
   align-items: center;
   display: flex;

@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
 
-import Section from './layout/Section'
+import Section from '../layout/Section'
+import MessageContainer from './styles/MessageContainer'
 
 // TODO: share style with loading
 
@@ -26,29 +26,11 @@ const Error = (props) => {
 
   return (
     <Section>
-      <LoadingInner {...props}>
+      <MessageContainer {...props}>
         <span>Oops: {errorMessage || error.message || error} 🤷‍♂️</span>
-      </LoadingInner>
+      </MessageContainer>
     </Section>
   )
 }
-
-const LoadingInner = styled.div`
-  height: ${({ height }) => height ? `${height}px` : 'calc(100vh - 500px)'}; // TODO get dynamically
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    font-size: 12px;
-    letter-spacing: 2px;
-    line-height: 1.5;
-    text-transform: uppercase;
-    color: #717171;
-    font-weight: 400;
-    display: block;
-    overflow: visible;
-  }
-`
 
 export default Error

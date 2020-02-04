@@ -2,9 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 
-import { useUserContext } from '../context/user/UserContext'
-import Section from './layout/Section'
-import Loading from './Loading'
+import { useUserContext } from '../../context/user/UserContext'
+import Loading from '../common/Loading'
 
 const loginUrl = `https://unsplash.com/oauth/authorize?client_id=${process.env.REACT_APP_UNSPLASH_API}&redirect_uri=${encodeURIComponent(process.env.REACT_APP_FRONTEND_URL)}&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+read_collections+write_collections`
 
@@ -56,7 +55,11 @@ const MenuBar = props => {
   )
 }
 
-const Bar = styled(Section)`
+const Bar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 5px 0;
   text-align: right;
   font-size: 13px;

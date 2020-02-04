@@ -38,7 +38,8 @@
   },
   layout: {
     maxWidth: '1250px',
-    widthPercent: '85%'
+    widthPercent: '85%',
+    headerHight: 465
   }
 }
 

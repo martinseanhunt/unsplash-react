@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 
-import Section from './layout/Section'
+import Section from '../layout/Section'
+import MessageContainer from './styles/MessageContainer'
 
 const Loading = props => {
   const [loadingDots, setLoadingDots] = useState('')
@@ -22,30 +22,11 @@ const Loading = props => {
 
   return (
     <Section>
-      <LoadingInner {...props}>
+      <MessageContainer {...props}>
         <span>{text}</span>
-      </LoadingInner>
+      </MessageContainer>
     </Section>
   )
 }
-
-const LoadingInner = styled.div`
-  height: ${({ height }) => height ? `${height}px` : 'calc(100vh - 500px)'};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    font-size: 12px;
-    letter-spacing: 2px;
-    line-height: 1.5;
-    text-transform: uppercase;
-    color: #717171;
-    font-weight: 400;
-    width: 80px;
-    display: block;
-    overflow: visible;
-  }
-`
 
 export default Loading

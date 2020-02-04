@@ -5,11 +5,11 @@ import PrivateRoute from './PrivateRoute'
 import { useUserContext } from '../context/user/UserContext'
 import useAuthenticate from '../hooks/useAuthenticate'
 
-import Header from './Header'
+import Header from './Header/Header'
 import Footer from './Footer'
 import Results from './Results/Results'
-import Loading from './Loading'
-import Error from './Error'
+import Loading from './common/Loading'
+import Error from './common/Error'
 
 const App = () => {
   useAuthenticate()
