@@ -71,17 +71,16 @@ const Results = props => {
   }
 
   const handleChangePage = (change) => {    
-    const scrollTo = theme.layout.headerHight - 50
-    if(window.pageYOffset > scrollTo) {
-      window.scrollTo({
-        top: scrollTo, 
-        behavior: 'smooth'
-      })
-    }
-    
+    history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
     setTimeout(() => {
-      history.push(`${pathname}?page=${page + change}${searchQuery ? `&query=${searchQuery}`: ''}`)
-    }, 250) 
+      const scrollTo = theme.layout.headerHight - 50
+      if(window.pageYOffset > scrollTo) {
+        window.scrollTo({
+          top: scrollTo, 
+          behavior: 'smooth'
+        })
+      }
+    }, 100) 
   }
 
   useEffect(() => {
@@ -101,41 +100,43 @@ const Results = props => {
   ) 
 
   return (
-    <Section>
-      <ResultsTitle
-        isFavourites={isFavourites}
-        searchQuery={searchQuery}
-      />
-      {results.length ? (
-        <ResultsContainer ref={resultsContainerRef}>
-          {results.map(r => 
-            <ResultCard 
-              result={r}  
-              key={r.id} 
-              isFavouritesPage={isFavourites}
-              page={page}
-              handleLikePhoto={handleLikePhoto}
-              handleUnlikePhoto={handleUnlikePhoto}
-              user={user}
-            />
-          )}
-        </ResultsContainer>
-      ) : (
-        <Error 
-          error={`Looks like there aren't any results here`} 
-          height='300'  
+    <div role="main" ref={resultsContainerRef}>
+      <Section>
+        <ResultsTitle
+          isFavourites={isFavourites}
+          searchQuery={searchQuery}
         />
-      )}
-      
-      <Pagination 
-        page={page}
-        totalPages={totalPages}
-        searchQuery={searchQuery}
-        pathname={pathname}
-        handleChangePage={handleChangePage}
-        pageLength={results.length}
-      />
-    </Section>
+        {results.length ? (
+          <ResultsContainer>
+            {results.map(r => 
+              <ResultCard 
+                result={r}  
+                key={r.id} 
+                isFavouritesPage={isFavourites}
+                page={page}
+                handleLikePhoto={handleLikePhoto}
+                handleUnlikePhoto={handleUnlikePhoto}
+                user={user}
+              />
+            )}
+          </ResultsContainer>
+        ) : (
+          <Error 
+            error={`Looks like there aren't any results here`} 
+            height='300'  
+          />
+        )}
+        
+        <Pagination 
+          page={page}
+          totalPages={totalPages}
+          searchQuery={searchQuery}
+          pathname={pathname}
+          handleChangePage={handleChangePage}
+          pageLength={results.length}
+        />
+      </Section>
+    </div>
   )
 }
 
