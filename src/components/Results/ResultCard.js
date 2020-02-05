@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
+import PreloadImage from '../util/PreloadImg'
 import Card from './styles/Card'
 import Heart from './Heart'
 
@@ -36,10 +37,11 @@ const ResultCard =  ({
 
   return (
     <Card className={removeFromPage ? 'remove': ''}>
-      <img 
+      <PreloadImage 
         src={result.urls.small} 
         alt={result.description || `${result.user.username}'s photo`} 
         onClick={() => openModal(result.id)}
+        loadingText=''
       />
 
       {user.id && (

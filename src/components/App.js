@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 
-import PrivateRoute from './PrivateRoute'
+import PrivateRoute from './util/PrivateRoute'
 import { useUserContext } from '../context/user/UserContext'
 import useAuthenticate from '../hooks/useAuthenticate'
 

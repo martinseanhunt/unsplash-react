@@ -16,7 +16,7 @@ const Loading = props => {
     return () => clearInterval(id)
   }, [])
 
-  const text = `${props.text || 'Loading'}${loadingDots}`
+  const text = `${props.text !== undefined ? props.text : 'Loading'}${loadingDots}`
 
   if(props.noStyle) return <span>{text}</span>
 

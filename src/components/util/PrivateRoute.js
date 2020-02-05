@@ -1,8 +1,8 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
-import { useUserContext } from '../context/user/UserContext'
-import Loading from './common/Loading'
+import { useUserContext } from '../../context/user/UserContext'
+import Loading from '../common/Loading'
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { state: user } = useUserContext()

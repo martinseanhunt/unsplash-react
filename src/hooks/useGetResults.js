@@ -24,6 +24,9 @@ const useGetResults = () => {
       Note: I thought about using useCallback for these and moving them outside the 
       useEffect, but I think they are small enouggh functions that it's not entirely worth it 
       should do some more reading on this to properly weight the performance cost/benefit  
+
+      Also, I should note, I would usually be using definted action types for all actions
+      Just trying to save myself a small amount of time
     */
 
     const getFavourites = async () => {

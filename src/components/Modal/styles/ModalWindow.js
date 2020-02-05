@@ -29,7 +29,17 @@ const ModalWindow = styled.div`
     position: relative;
     max-height: 85%;
     display: flex;
+    align-items: stretch;
+  }
 
+  .image-preloader__loading-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-preloader__image-container {
     img {
       height: 100%;
       width: 100%;
@@ -59,15 +69,5 @@ const ModalWindow = styled.div`
     z-index: 30000;
   }
 
-  .loading {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
 `
 export default ModalWindow

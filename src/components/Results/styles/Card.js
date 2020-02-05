@@ -7,6 +7,17 @@ const Card = styled.div`
   padding-top: 20px;
   position: relative;
   transition: opacity 1s, transform 0.2s;
+  display: flex; 
+  align-items: stretch;
+
+  .image-preloader__loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: ${({theme}) => theme.colors.lightGrey};
+    color: ${({theme}) => theme.colors.medLightGrey2};
+  }
 
   &:hover {
     transform: scale(1.015);
