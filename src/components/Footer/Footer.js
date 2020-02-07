@@ -9,7 +9,9 @@ const Footer = (props) => {
       <Section>
         <FooterContent>
           <div></div>
-          <span>martinseanhunt@gmail.com</span>
+          <span data-test='email'>
+            martinseanhunt@gmail.com
+          </span>
         </FooterContent>
       </Section>
     </footer>
