@@ -1,19 +1,26 @@
 import React from 'react'
-import Enzyme, { shallow } from 'enzyme'
-import EnzymeAdapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
 
+import { findByTest } from '../../test/testUtils' 
 import Footer from './Footer'
 
-Enzyme.configure({ adapter: new EnzymeAdapter() })
+const init = props => shallow(<Footer {...props} />)
+
+let wrapper
+beforeEach(() => wrapper = init())
 
 test('renders without errors', () => {
-  const wrapper = shallow(<Footer />)
-  const email = wrapper.find('[data-test="component-footer"]')
-  expect(email.length).toBe(1)
+  const component = findByTest(wrapper, 'component-footer')
+  expect(component.length).toBe(1)
 })
 
-test('Renders email', () => {
-  const wrapper = shallow(<Footer />)
-  const email = wrapper.find('[data-test="email"]')
-  expect(email.length).toBe(1)
+test('Shows valid email', () => {
+  const emailText = findByTest(wrapper, 'email').text()
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailText)
+  expect(validEmail).toBeTruthy()
+})
+
+test('Shows logo', () => {
+  const logo = findByTest(wrapper, 'logo')
+  expect(logo.length).toBe(1)
 })
