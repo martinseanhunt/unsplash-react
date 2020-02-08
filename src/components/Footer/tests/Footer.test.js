@@ -1,8 +1,8 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { findByTest } from '../../test/testUtils' 
-import Footer from './Footer'
+import { findByTest } from '../../../test/testUtils' 
+import Footer from '../Footer'
 
 const init = props => shallow(<Footer {...props} />)
 

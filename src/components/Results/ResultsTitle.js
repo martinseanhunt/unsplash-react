@@ -4,7 +4,7 @@ import SmallCaps from '../common/styles/SmallCaps'
 
 const ResultsTitle = ({ searchQuery, isFavourites }) => {
   const render = (text) => (
-    <SmallCaps>
+    <SmallCaps data-test='component-results-title'>
       {text}
     </SmallCaps>
   )

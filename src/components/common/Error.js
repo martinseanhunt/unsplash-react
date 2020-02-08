@@ -20,12 +20,12 @@ const Error = (props) => {
   }
   
   if(noStyle) 
-    return <span>Oops: {errorMessage || error.message || error}</span>
+    return <span data-test='unstyled-error'>Oops: {errorMessage || error.message || error}</span>
 
   return (
     <Section>
       <MessageContainer {...props}>
-        <span>Oops: {errorMessage || error.message || error} 🤷‍♂️</span>
+        <span data-test='styled-error'>Oops: {errorMessage || error.message || error} 🤷‍♂️</span>
       </MessageContainer>
     </Section>
   )

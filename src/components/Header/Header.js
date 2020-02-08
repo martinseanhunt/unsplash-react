@@ -10,12 +10,12 @@ import FormContainer from './styles/FormContainer'
 
 const Header = (props) => {
   return(
-    <header id="header">
+    <header id="header" data-test="component-header">
       <Section 
         backgroundColor='bluePurple'
         lightText
       >
-        <MenuBar />
+        <MenuBar data-test='menu'/>
         <HeaderContent>
 
           <BannerShapes 
@@ -23,9 +23,10 @@ const Header = (props) => {
             height='325'
             maxDegreesY='40'
             maxDegreesX='70'
+            data-test='shapes'
           />
 
-          <FormContainer>
+          <FormContainer data-test='form'>
             <SearchForm />
           </FormContainer>
           

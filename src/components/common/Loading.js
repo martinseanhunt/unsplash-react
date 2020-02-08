@@ -18,12 +18,12 @@ const Loading = props => {
 
   const text = `${props.text !== undefined ? props.text : 'Loading'}${loadingDots}`
 
-  if(props.noStyle) return <span>{text}</span>
+  if(props.noStyle) return <span data-test='loading'>{text}</span>
 
   return (
-    <Section>
+    <Section data-test='component-styled-loading'>
       <MessageContainer {...props}>
-        <span>{text}</span>
+        <span data-test='loading'>{text}</span>
       </MessageContainer>
     </Section>
   )

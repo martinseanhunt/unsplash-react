@@ -67,7 +67,7 @@ export default createGlobalStyle`
     font-family: ${({theme}) => theme.fontFamilies.main};
     min-height: 100vh;
     font-size: 1.6rem;
-    color: ${({theme}) => theme.colors.darkGrey}
+    color: ${({theme}) => theme.colors.darkGrey};
     width: 100%;
     overflow-x: hidden;
     line-height: 2.7rem

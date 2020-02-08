@@ -8,7 +8,7 @@ const Inner = styled.div`
 `
 
 export default props => (
-  <Inner>
+  <Inner data-test='component-inner'>
     {props.children}
   </Inner>
 )

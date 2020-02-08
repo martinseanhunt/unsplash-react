@@ -7,19 +7,24 @@ const SearchForm = props => {
   const [inputValue, setInputValue] = useState('')
   const history = useHistory()
   
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault()
     history.push(`/?page=1&query=${inputValue}`)
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form 
+      onSubmit={handleSubmit}
+      data-test='component-search-form'
+    >
       <input 
         name="search" 
         type="text" 
         placeholder="Find images of..."
         onChange={e => setInputValue(e.target.value)}  
         width="0"
+        data-test="input"
+        value={inputValue}
       />
       <button>Search</button>
     </Form>

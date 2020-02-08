@@ -18,7 +18,7 @@ const Index = () => {
       <BrowserRouter>
         <UserContextProvider>
           <ResultsContextProvider>
-            <App />
+            <App data-test='component-app'/>
           </ResultsContextProvider>
         </UserContextProvider>
       </BrowserRouter>
@@ -27,3 +27,5 @@ const Index = () => {
 }
 
 ReactDOM.render(<Index />, document.getElementById('root'))
+
+export default Index

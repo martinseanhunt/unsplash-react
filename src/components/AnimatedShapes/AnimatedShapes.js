@@ -67,7 +67,7 @@ const AnimatedShapes = props => {
   }, [listenOnElementId, maxDegreesX, maxDegreesY, clientHeight, clientWidth])
   
   return (
-    <ImageContainer {...props} ref={images}>
+    <ImageContainer {...props} ref={images} data-test="component-animated-shapes">
       <img src="/img/bannershape3.svg" alt="animated shape" />
       <img src="/img/bannershape2.svg" alt="animated shape" />
       <img src="/img/bannershape1.svg" alt="animated shape" />  
