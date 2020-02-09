@@ -11,7 +11,7 @@ beforeEach(() => wrapper = init())
 
 test('renders without errors', () => {
   const component = findByTest(wrapper, 'component-footer')
-  expect(component.length).toBe(1)
+  expect(component.exists()).toBe(true)
 })
 
 test('Shows valid email', () => {
@@ -22,5 +22,5 @@ test('Shows valid email', () => {
 
 test('Shows logo', () => {
   const logo = findByTest(wrapper, 'logo')
-  expect(logo.length).toBe(1)
+  expect(logo.exists()).toBe(true)
 })

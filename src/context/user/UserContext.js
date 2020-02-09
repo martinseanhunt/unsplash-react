@@ -17,7 +17,7 @@ const UserContextProvider = props => {
   ])
 
   return (
-    <UserContext.Provider value={props.testValue || value}>
+    <UserContext.Provider value={props.value || value}>
       {props.children}
     </UserContext.Provider>
   )

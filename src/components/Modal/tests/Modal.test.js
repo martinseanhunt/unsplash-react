@@ -19,7 +19,7 @@ const defaultContextValue = {
 }
 
 const init = (contextValue, props) => mount(
-  <ResultsContextProvider testValue={contextValue}>
+  <ResultsContextProvider value={contextValue}>
     <ThemeProvider theme={theme}>
       <Modal {...props} />
     </ThemeProvider>

@@ -19,7 +19,7 @@ const defaultContextValue = {
 
 const init = (contextValue, pathToTest='/', props) => mount(
   <MemoryRouter initialEntries={[pathToTest]}>
-    <UserContextProvider testValue={contextValue}>
+    <UserContextProvider value={contextValue}>
       <ThemeProvider theme={theme}>
         <MenuBar {...props} />
       </ThemeProvider>
@@ -44,6 +44,8 @@ describe('user is not authed', () => {
         error: 'some error'
       }
     })
+
+    
     const node = findByTest(wrapper, 'login-link')
     expect(node.exists()).toBe(true)
   })

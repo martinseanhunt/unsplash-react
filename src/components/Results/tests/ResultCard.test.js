@@ -51,7 +51,7 @@ test('clicking image calls open modal with result id', () => {
   expect(mockOpenModal).toHaveBeenLastCalledWith(exampleResult.id)
 })
 
-describe('no authed user', () => {
+describe('if there is no authed user', () => {
   test('Doesnt render heart icon', () => {
     const wrapper = init()
     const node = findByTest(wrapper, 'heart-icon')
@@ -60,7 +60,7 @@ describe('no authed user', () => {
 })
 
 
-describe('authed user', () => {
+describe('if there is an authed user', () => {
   const liked = { 
     user: { id: 123 },
     result: {

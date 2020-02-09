@@ -6,17 +6,16 @@ import Loading from '../Loading'
 
 const init = props => shallow(<Loading {...props} />)
 
-
 test('styled loading compnent is rendered if not told to behave otehrwise', () => {
   const wrapper = init()
   const component = findByTest(wrapper, 'component-styled-loading')
-  expect(component.length).toBe(1)
+  expect(component.exists()).toBe(true)
 })
 
 test('simple span is rendered if given noStyle prop', () => {
   const wrapper = init({ noStyle: true })
   const component = findByTest(wrapper, 'component-styled-loading')
-  expect(component.length).toBe(0)
+  expect(component.exists()).toBe(false)
 })
 
 test('loading text is displayed if no text prop', () => {

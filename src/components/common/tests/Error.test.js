@@ -12,12 +12,12 @@ describe('If noStyle prop not passed', () => {
 
   test('styled error compnent is rendered', () => {
     const component = findByTest(wrapper, 'styled-error')
-    expect(component.length).toBe(1)
+    expect(component.exists()).toBe(true)
   })
 
   test('unstyled error compnent is not rendered', () => {
     const component = findByTest(wrapper, 'unstyled-error')
-    expect(component.length).toBe(0)
+    expect(component.exists()).toBe(false)
   })
 
   test('renders error messaga', () => {
@@ -37,12 +37,12 @@ describe('If noStyle prop passed', () => {
 
   test('styled error compnent is not rendered', () => {
     const component = findByTest(wrapper, 'styled-error')
-    expect(component.length).toBe(0)
+    expect(component.exists()).toBe(false)
   })
 
   test('unstyled error compnent is rendered', () => {
     const component = findByTest(wrapper, 'unstyled-error')
-    expect(component.length).toBe(1)
+    expect(component.exists()).toBe(true)
   })
 
   test('renders error messaga', () => {

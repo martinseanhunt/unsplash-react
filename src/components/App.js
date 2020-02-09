@@ -17,14 +17,14 @@ const App = () => {
   const { state: { error, hasCheckedAuth } } = useUserContext()
 
   const fallbackComponent = error 
-    ? <Error error={error.message}/>
-    : <Loading />
+    ? <Error error={error.message} data-test='error' />
+    : <Loading data-test='loading' />
 
   return (
     <>
       <Header />
-      {hasCheckedAuth ? (
-        <Switch>
+      {(hasCheckedAuth && !error) ? (
+        <Switch data-test='routes'>
           <PrivateRoute path="/favourites">
             <Results />
           </PrivateRoute>

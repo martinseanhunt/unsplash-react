@@ -17,7 +17,7 @@ const ResultsContextProvider = props => {
   ])
 
   return (
-    <ResultsContext.Provider value={props.testValue || value}>
+    <ResultsContext.Provider value={props.value || value}>
       {props.children}
     </ResultsContext.Provider>
   )

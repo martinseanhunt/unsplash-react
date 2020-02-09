@@ -9,23 +9,23 @@ const init = props => shallow(<Header {...props} />)
 test('Header renders component without crashing', () => {
   const wrapper = init()
   const component = findByTest(wrapper, 'component-header')
-  expect(component.length).toBe(1)
+  expect(component.exists()).toBe(true)
 })
 
 test('renders menu', () => {
   const wrapper = init()
   const node = findByTest(wrapper, 'menu')
-  expect(node.length).toBe(1)
+  expect(node.exists()).toBe(true)
 })
 
 test('renders shapes', () => {
   const wrapper = init()
   const node = findByTest(wrapper, 'shapes')
-  expect(node.length).toBe(1)
+  expect(node.exists()).toBe(true)
 })
 
 test('renders form', () => {
   const wrapper = init()
   const node = findByTest(wrapper, 'form')
-  expect(node.length).toBe(1)
+  expect(node.exists()).toBe(true)
 })

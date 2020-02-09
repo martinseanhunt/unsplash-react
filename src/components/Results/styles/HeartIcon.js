@@ -8,7 +8,7 @@ const pulse = keyframes`
 const HeartIcon = styled.svg`
   position: absolute;
   bottom: 10px;
-  right: 33px;
+  right: 13px;
   width: 40px;
   height; 40px;
   overflow: visible;

@@ -11,5 +11,5 @@ beforeEach(() => wrapper = init())
 
 test('compnent is rendered', () => {
   const component = findByTest(wrapper, 'component-animated-shapes')
-  expect(component.length).toBe(1)
+  expect(component.exists()).toBe(true)
 })
