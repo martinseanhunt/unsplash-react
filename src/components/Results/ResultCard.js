@@ -36,18 +36,20 @@ const ResultCard =  ({
   }
 
   return (
-    <Card className={removeFromPage ? 'remove': ''}>
+    <Card className={removeFromPage ? 'remove': ''} data-test='component-result-card'>
       <PreloadImage 
         src={result.urls.small} 
         alt={result.description || `${result.user.username}'s photo`} 
         onClick={() => openModal(result.id)}
         loadingText=''
+        data-test='card-image'
       />
 
       {user.id && (
         <Heart 
           onClick={handleFave}
           className={`${clickedFave ? 'clicked' : null} ${result.liked_by_user ? 'faved' : null}`}
+          data-test='heart-icon'
         />
       )}
     </Card>

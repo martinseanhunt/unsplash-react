@@ -92,10 +92,10 @@ const Results = props => {
       setLoadedResultsHeight(resultsContainerRef.current.offsetHeight)
   }, [results, setLoadedResultsHeight, resultsContainerRef])
 
-
-  if(error) return <Error error={error} />
+  if(error) return <Error error={error} data-test='error' />
   if(loading || !hasLoadedInitialResults) return (
     <Loading 
+      data-test='loading'
       height={hasLoadedInitialResults 
         ? loadedResultsHeight 
         : undefined
@@ -104,14 +104,14 @@ const Results = props => {
   ) 
 
   return (
-    <div role="main" ref={resultsContainerRef}>
+    <div role="main" ref={resultsContainerRef} data-test='component-results'>
       <Section>
         <ResultsTitle
           isFavourites={isFavourites}
           searchQuery={searchQuery}
         />
         {results.length ? (
-          <ResultsContainer>
+          <ResultsContainer data-test='results-list'>
             {results.map(r => 
               <ResultCard 
                 result={r}  
@@ -129,6 +129,7 @@ const Results = props => {
           <Error 
             error={`Looks like there aren't any results here`} 
             height='300'  
+            data-test='no-results'
           />
         )}
         

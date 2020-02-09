@@ -9,9 +9,10 @@ const PrivateRoute = ({ children, ...rest }) => {
 
   return (
     <Route
+      data-test='component-private-route'
       {...rest}
       render={({ location }) => {
-        if(!user.hasCheckedAuth) return <Loading text='Authenticating' />
+        if(!user.hasCheckedAuth) return <Loading data-test='authenticating' text='Authenticating' />
         
         return (user.id && localStorage.token) ? (
           children

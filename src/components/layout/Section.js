@@ -28,7 +28,7 @@ const Section = styled.div`
 `
 
 export default props => (
-  <Section {...props}>
+  <Section {...props} data-test='component-section'>
     <Inner>
       {props.children}
     </Inner>

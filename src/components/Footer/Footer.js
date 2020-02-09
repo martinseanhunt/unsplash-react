@@ -5,11 +5,13 @@ import FooterContent from './styles/FooterContent'
 
 const Footer = (props) => {
   return(
-    <footer>
+    <footer data-test='component-footer'>
       <Section>
         <FooterContent>
-          <div></div>
-          <span>martinseanhunt@gmail.com</span>
+          <div data-test='logo'></div>
+          <span data-test='email'>
+            martinseanhunt@gmail.com
+          </span>
         </FooterContent>
       </Section>
     </footer>

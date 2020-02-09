@@ -19,27 +19,27 @@ const MenuBar = props => {
 
   const Login = () => 
     <>
-      {state.loading ? (
-        <Loading noStyle={true}/>
+      {state.loading || (!state.hasCheckedAuth && !state.error) ? (
+        <Loading noStyle={true} data-test='loading'/>
       ) : (   
-        <a href={loginUrl}>Login</a>
+        <a href={loginUrl} data-test='login-link'>Login</a>
       )}
     </>
 
   const UserMenu = () => 
-    <span>
+    <span data-test='user-menu'>
       Hi {state.name}
-      <button onClick={handleLogout}>
+      <button onClick={handleLogout} data-test='logout-button'>
         Logout
       </button>
       {pathname.includes('/favourites')
-        ? <Link to="/">Home</Link>
-        : <Link to="/favourites">My Favourites</Link>
+        ? <Link to="/" data-test='home-link'>Home</Link>
+        : <Link to="/favourites" data-test='faves-link'>My Favourites</Link>
       }
     </span>
 
   const GetComponent = () => {
-    if(state.error) return <Login />
+    if(state.error || !state.hasCheckedAuth) return <Login />
     if(state.hasCheckedAuth && !state.id) return <Login />
     if(state.hasCheckedAuth && state.id) return <UserMenu />
     return null
@@ -49,6 +49,7 @@ const MenuBar = props => {
     <Bar
       backgroundColor='bluePurple'
       lightText
+      data-test='component-menu-bar'
     >
       <GetComponent />
     </Bar>

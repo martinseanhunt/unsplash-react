@@ -4,6 +4,10 @@ const initialState = {
   results: [],
   totalPages: null,
   hasLoadedInitialResults: false,
+  /* 
+    NOTE: I would use a seperate context for modal in production to make 
+    it more reusable. Was just saving time here 
+  */
   modal: null
 }
 
