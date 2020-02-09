@@ -15,7 +15,7 @@ beforeEach(() => {
   wrapper = init()
 })
 
-test('renders the App component without crashing', () => {
+test('Entire app without crashing', () => {
   const component = findByTest(wrapper, 'component-app')
-  expect(component.length).toBe(1)
+  expect(component.exists()).toBe(true)
 })
