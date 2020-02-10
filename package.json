@@ -16,7 +16,6 @@
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-react-app": "^9.1.1",
     "camelcase": "^5.3.1",
-    "canvas": "^2.6.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "css-loader": "3.4.2",
     "dotenv": "8.2.0",
@@ -67,8 +66,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": " node scripts/test.js",
-    "httpserver": "http-server --port 3080"
+    "test": " node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -89,7 +87,6 @@
     "babel-plugin-react-remove-properties": "^0.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "http-server": "^0.12.1",
     "jest-enzyme": "^7.1.2"
   },
   "jest": {
@@ -110,9 +107,6 @@
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
-    "testEnvironmentOptions": {
-      "resources": "usable"
-    },
     "testEnvironment": "jest-environment-jsdom-fourteen",
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
