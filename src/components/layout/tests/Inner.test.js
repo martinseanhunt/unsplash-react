@@ -6,9 +6,9 @@ import theme from '../../../globalstyles/theme'
 import { findByTest } from '../../../test/testUtils' 
 import Inner from '../Inner'
 
-const init = (props) => mount(
+const init = () => mount(
   <ThemeProvider theme={theme}>
-    <Inner {...props} />
+    <Inner />
   </ThemeProvider>
 )
 

@@ -6,10 +6,8 @@ import AnimatedShapes from '../AnimatedShapes'
 
 const init = props => shallow(<AnimatedShapes {...props} />)
 
-let wrapper
-beforeEach(() => wrapper = init())
-
 test('compnent is rendered', () => {
+  const wrapper = init()
   const component = findByTest(wrapper, 'component-animated-shapes')
   expect(component.exists()).toBe(true)
 })

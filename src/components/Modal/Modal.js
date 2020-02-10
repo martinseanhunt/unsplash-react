@@ -41,6 +41,7 @@ const Modal = () => {
         <PreloadImg 
           src={imageUrl}
           alt={imageDescription|| `${userName}'s photo`}
+          data-test='image'
         />
       </div>
     </ModalWindow>

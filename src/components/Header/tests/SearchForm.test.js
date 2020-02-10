@@ -12,7 +12,7 @@ jest.mock('react-router-dom', () => ({
   }),
 }))
 
-const init = props => shallow(<SearchForm {...props} />)
+const init = () => shallow(<SearchForm />)
 
 let wrapper
 beforeEach(() => {
@@ -39,11 +39,12 @@ test('input value udpates on change', () => {
 
 test('sumbitting form triggers push to history with expected URI', () => {
   const input = findByTest(wrapper, 'input')
+  
   const mockEvent = { target: { value: 'grog' } }
   input.simulate('change', mockEvent)
 
   const form = findByTest(wrapper, 'component-search-form')
   form.simulate('submit', { preventDefault: () => null })
 
-  expect(mockHistoryPush.mock.calls[0][0]).toEqual(expect.stringContaining('grog'))
+  expect(mockHistoryPush.mock.calls.pop()[0]).toEqual(expect.stringContaining('grog'))
 })

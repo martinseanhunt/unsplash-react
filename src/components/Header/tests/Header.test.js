@@ -4,7 +4,7 @@ import { shallow } from 'enzyme'
 import { findByTest } from '../../../test/testUtils' 
 import Header from '../Header'
 
-const init = props => shallow(<Header {...props} />)
+const init = () => shallow(<Header />)
 
 test('Header renders component without crashing', () => {
   const wrapper = init()
@@ -24,7 +24,7 @@ test('renders shapes', () => {
   expect(node.exists()).toBe(true)
 })
 
-test('renders form', () => {
+test('renders search form', () => {
   const wrapper = init()
   const node = findByTest(wrapper, 'form')
   expect(node.exists()).toBe(true)

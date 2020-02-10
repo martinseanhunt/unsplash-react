@@ -17,13 +17,6 @@ jest.mock('../../context/results/ResultsContext', () => ({
 
 jest.mock('../../context/user/UserContext')
 
-const createUserState = (state) => ({
-  state: {
-    ...initialState,
-    ...state
-  }
-})
-
 api.getFavourites = jest.fn()
 api.searchImages = jest.fn()
 
@@ -41,24 +34,31 @@ const HookComponent = () => {
   NOTE: useLocation is a getter and so jest.mock won't mock it.
   using memory router instead.
 */
-const init = (path='/') => mount(
-  <MemoryRouter initialEntries={[path]}>
-    <HookComponent />)
-  </MemoryRouter>
-)
+const init = (state, path='/') => {
+  const userContextValue = {
+    state: {
+      ...initialState,
+      ...state
+    }
+  }
+  
+  useUserContext.mockImplementation(() => userContextValue)
+
+  return mount(
+    <MemoryRouter initialEntries={[path]}>
+      <HookComponent />)
+    </MemoryRouter>
+  )
+}
 
 beforeEach(() => jest.clearAllMocks())
 
 test('If not favourites and no user id, SET_SEARCH_RESULTS action is dispatched',async () => {
-  useUserContext.mockImplementationOnce(() => createUserState())
-
   await act(async () => { init() })
   expect(mockResultsDispatch.mock.calls.pop()[0].type).toBe('SET_RESULTS_RESULTS')
 })
 
 test('Ifand user id, SET_RESULTS_FAVOURITES action is dispatched', async () => {
-  useUserContext.mockImplementationOnce(() => createUserState({ id: 123 }))
-
-  await act(async () => { init('/favourites') })
+  await act(async () => { init({ id: 123 }, '/favourites') })
   expect(mockResultsDispatch.mock.calls.pop()[0].type).toBe('SET_RESULTS_FAVOURITES')
 }) 
