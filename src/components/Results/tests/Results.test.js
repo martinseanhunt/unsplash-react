@@ -1,88 +1,94 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+
 import theme from '../../../globalstyles/theme'
-import { MemoryRouter } from 'react-router-dom'
-
-import UserContextProvider from '../../../context/user/UserContext'
+import { useUserContext } from '../../../context/user/UserContext'
 import { initialState as initialUserState } from '../../../context/user/userReducer'
-
-import ResultsContextProvider from '../../../context/results/ResultsContext'
+import { useResultsContext } from '../../../context/results/ResultsContext'
 import { initialState as initialResultsState } from '../../../context/results/resultsReducer'
-
+import useGetResults from '../../../hooks/useGetResults'
 import exampleResults from '../../../test/exampleResults'
-
 import { findByTest } from '../../../test/testUtils' 
+
 import Results from '../Results'
 
+jest.mock('../../../context/results/ResultsContext')
+jest.mock('../../../context/user/UserContext')
+jest.mock('../../../hooks/useGetResults')
+
 /* 
-  NOTE: This was working fine without moccking and never effects state
-  because only the mocked dispatches are ever called. but I'm mocking it
-  to reduce any brittleness with further changes and to have more
-  control over the state of the tests
+  NOTE: Mocking useGetResults in this way in case we ever wanted to add
+  more tests based on the different return values of useGetResults
+  now we can set them individually on each test.
+
+  I spent more time geting this test suite set up for flexible, integration
+  style tests than actually writing the tests. This was an interesting challenge
+  and a good oportunity to learn!
 */
-jest.mock('../../../hooks/useGetResults', () => () => ({
+const defaultGetResultsValues = {
   page: 1,
   searchQuery: 'Duckling party',
   pathname: '/',
   isFavourites: false
-}))
+}
 
 const mockUserDispatch = jest.fn((action) => action.type)
 const mockResultsDispatch = jest.fn((action) => action.type)
 
-const defaultUserContextValue = {
-  state: initialUserState,
-  dispatch: mockUserDispatch
-}
-
-const defaultResultsContextValue = {
-  state: initialResultsState,
-  dispatch: mockResultsDispatch
-}
-
 const init = (options={}) => {
-  const { userState={}, resultsState={}, pathToTest='/', props } = options
+  const { 
+    userState={}, 
+    resultsState={}, 
+    getResultsValues={},
+  } = options
 
   const userContextValue = {
-    ...defaultUserContextValue,
     state: {
-      ...defaultUserContextValue.state,
+      ...initialUserState,
       ...userState
-    }
+    },
+    dispatch: mockUserDispatch
   }
 
   const resultsContextValue = {
-    ...defaultResultsContextValue,
     state: {
-      ...defaultResultsContextValue.state,
+      ...initialResultsState,
       ...resultsState
-    }
+    },
+    dispatch: mockResultsDispatch
   }
 
+  useUserContext.mockImplementation(() => userContextValue)
+  useResultsContext.mockImplementation(() => resultsContextValue)
+  useGetResults.mockImplementation(() => () => ({
+    ...defaultGetResultsValues,
+    getResultsValues
+  }))
+
   return mount(
-    <MemoryRouter initialEntries={[pathToTest]}>
-      <UserContextProvider value={userContextValue}>
-        <ResultsContextProvider value={resultsContextValue}>
-          <ThemeProvider theme={theme}>
-            <Results {...props} />
-          </ThemeProvider>
-        </ResultsContextProvider>
-      </UserContextProvider>
-    </MemoryRouter>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <Results />
+      </ThemeProvider>
+    </BrowserRouter>
   )
 }
 
-beforeEach(() => {
-  mockUserDispatch.mockClear()
-  mockResultsDispatch.mockClear()
-})
+beforeEach(() => jest.clearAllMocks())
 
 describe('Before results loaded', () => {
   test('Renders Loading', () => {
     const wrapper = init()
     const node = findByTest(wrapper, 'loading')
     expect(node.exists()).toBe(true)
+  })
+
+  test('main component not rendered', () => {
+    const wrapper = init()
+    const node = findByTest(wrapper, 'component-results')
+    expect(node.exists()).toBe(false)
   })
 })
 
@@ -95,35 +101,53 @@ describe('when results error', () => {
 })
 
 describe('When results initialized and results to show', () => {
-  let state
-  beforeEach(() => state = {
+  const resultsState = {
     results: exampleResults,
     hasLoadedInitialResults: true
-  })
+  }
 
   test('main component rendered', () => {
-    const wrapper = init({ resultsState: state })
+    const wrapper = init({ resultsState })
     const node = findByTest(wrapper, 'component-results')
     expect(node.exists()).toBe(true)
   })
 
   test('results list rendered', () => {
-    const wrapper = init({ resultsState: state })
+    const wrapper = init({ resultsState })
     const node = findByTest(wrapper, 'results-list')
     expect(node.exists()).toBe(true)
+  })
+
+  test('correct number of result cards are displayed', () => {
+    const wrapper = init({ resultsState })
+    const nodes = findByTest(wrapper, 'result-card')
+    expect(nodes.length).toBe(exampleResults.length)
   })
 })
 
 describe('When results initialized and no results to show', () => {
-  let state
-  beforeEach(() => state = {
+  const resultsState = {
     results: [],
     hasLoadedInitialResults: true
-  })
+  }
 
   test('no results error rendered', () => {
-    const wrapper = init({ resultsState: state })
+    const wrapper = init({ resultsState })
     const node = findByTest(wrapper, 'no-results')
     expect(node.exists()).toBe(true)
   })
+
+  test('no result cards are displayed', () => {
+    const wrapper = init({ resultsState })
+    const nodes = findByTest(wrapper, 'result-card')
+    expect(nodes.length).toBe(0)
+  })
 })
+
+/*
+  TODO: Write integration tests that test the logic of the various handlers
+  in this component which are triggered by components further down the tree.
+  Mock all the api functions to stop them firing then see that the correct 
+  actions are being dispatched based on setting the return values of useGetResults
+  and simulating various events.
+*/

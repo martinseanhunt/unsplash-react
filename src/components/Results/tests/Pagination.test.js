@@ -29,86 +29,89 @@ test('Component Renders', () => {
   expect(node.exists()).toBe(true)
 })
 
-test('pages count should display given count and page', () => {
-  const wrapper = init({ page: 1, pageLength: 12, totalPages: 100 })
-    const node = findByTest(wrapper, 'pages-count')
-    expect(node.text()).toEqual(expect.stringMatching('page 1 of 100'))
-})
-
-describe('testing handlers', () => {
-  test('handler should be called with -1 when click prev', () => {
-    const wrapper = init({ page: 3 })
-    const node = findByTest(wrapper, 'prev-button')
-    node.simulate('click')
-    expect(mockHandleChangePage).toHaveBeenLastCalledWith(-1)
+describe('pages count', () => {
+  test('should display given count and page', () => {
+    const wrapper = init({ page: 1, pageLength: 12, totalPages: 100 })
+      const node = findByTest(wrapper, 'pages-count')
+      expect(node.text()).toEqual(expect.stringMatching('page 1 of 100'))
   })
 
-  test('handler should be called with 1 when click next', () => {
-    const wrapper = init({ page: 3 })
-    const node = findByTest(wrapper, 'next-button')
-    node.simulate('click')
-    expect(mockHandleChangePage).toHaveBeenLastCalledWith(1)
-  })
-})
-
-describe('deciding what UI elemtns to hide / render', () => {
-  test('renders back button if page > 1', () => {
-    const wrapper = init({ page: 3 })
-    const node = findByTest(wrapper, 'prev-button')
-    expect(node.exists()).toBe(true)
-  })
-  
-  test('hides back button if !page > 1', () => {
-    const wrapper = init({ page: 1 })
-    const node = findByTest(wrapper, 'prev-button')
-    expect(node.exists()).toBe(false)
-  })
-  
-  test('shows next button if totalPages > current page', () => {
-    const wrapper = init({ page: 100, totalPages: 104 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(true)
-  })
-  
-  test('doesnt show next button if youre on the last page', () => {
-    const wrapper = init({ page: 104, totalPages: 104 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(false)
-  })
-  
-  test('doesnt show next button if youre on the last page', () => {
-    const wrapper = init({ page: 104, totalPages: 104 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(false)
-  })
-  
-  test('doesnt show next button if youre page > last page', () => {
-    const wrapper = init({ page: 114, totalPages: 104 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(false)
-  })
-  
-  test('hides next button if results on page < 12', () => {
-    const wrapper = init({ page: 1, pageLength: 10 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(false)
-  })
-  
-  test('shows next button if results on page >= 12', () => {
-    const wrapper = init({ page: 1, pageLength: 12 })
-    const node = findByTest(wrapper, 'next-button')
-    expect(node.exists()).toBe(true)
-  })
-  
-  test('hides pages count if no totalpages prop', () => {
+  test('should be hidden if no totalpages prop', () => {
     const wrapper = init({ page: 1, pageLength: 12 })
     const node = findByTest(wrapper, 'pages-count')
     expect(node.exists()).toBe(false)
   })
   
-  test('shows pages count if totalpages prop', () => {
+  test('should be shown if totalpages prop', () => {
     const wrapper = init({ page: 1, pageLength: 12, totalPages: 100 })
     const node = findByTest(wrapper, 'pages-count')
     expect(node.exists()).toBe(true)
   })  
 })
+
+describe('back button ', () => {
+  test('should render if page > 1', () => {
+    const wrapper = init({ page: 3 })
+    const node = findByTest(wrapper, 'prev-button')
+    expect(node.exists()).toBe(true)
+  })
+  
+  test('should be hidden if !page > 1', () => {
+    const wrapper = init({ page: 1 })
+    const node = findByTest(wrapper, 'prev-button')
+    expect(node.exists()).toBe(false)
+  })
+
+  test('should call handler with -1 when click prev', () => {
+    const wrapper = init({ page: 3 })
+    const node = findByTest(wrapper, 'prev-button')
+    node.simulate('click')
+    expect(mockHandleChangePage).toHaveBeenLastCalledWith(-1)
+  })
+})
+
+describe('next button', () => {
+  test('should call handler with 1 when clicked', () => {
+    const wrapper = init({ page: 3 })
+    const node = findByTest(wrapper, 'next-button')
+    node.simulate('click')
+    expect(mockHandleChangePage).toHaveBeenLastCalledWith(1)
+  })
+  
+  test('should render if totalPages > current page', () => {
+    const wrapper = init({ page: 100, totalPages: 104 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(true)
+  })
+  
+  test('should be hidden if youre on the last page', () => {
+    const wrapper = init({ page: 104, totalPages: 104 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(false)
+  })
+  
+  test('should be hidden if youre on the last page', () => {
+    const wrapper = init({ page: 104, totalPages: 104 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(false)
+  })
+  
+  test('should be hidden if youre page > last page', () => {
+    const wrapper = init({ page: 114, totalPages: 104 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(false)
+  })
+  
+  test('should be hidden if results on page < 12', () => {
+    const wrapper = init({ page: 1, pageLength: 10 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(false)
+  })
+  
+  test('should render if results on page >= 12', () => {
+    const wrapper = init({ page: 1, pageLength: 12 })
+    const node = findByTest(wrapper, 'next-button')
+    expect(node.exists()).toBe(true)
+  })  
+})
+

@@ -15,7 +15,7 @@ import ResultsContainer from './styles/ResultsContainer'
 import ResultCard from './ResultCard'
 import Pagination from './Pagination'
 
-const Results = props => {
+const Results = props => {  
   const history = useHistory()
   const { state, dispatch: resultsDispatch } = useResultsContext()
   const { state: user } = useUserContext()
@@ -122,6 +122,7 @@ const Results = props => {
                 handleUnlikePhoto={handleUnlikePhoto}
                 user={user}
                 openModal={openModal}
+                data-test='result-card'
               />
             )}
           </ResultsContainer>

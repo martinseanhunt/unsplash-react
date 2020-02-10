@@ -6,9 +6,9 @@ import theme from '../../../globalstyles/theme'
 import { findByTest } from '../../../test/testUtils' 
 import Section from '../Section'
 
-const init = (props) => mount(
+const init = () => mount(
   <ThemeProvider theme={theme}>
-    <Section {...props} />
+    <Section />
   </ThemeProvider>
 )
 

@@ -6,8 +6,8 @@ import Heart from '../Heart'
 
 const mockOnClick = jest.fn()
 
-const init = (props) => shallow(
-  <Heart {...props} onClick={mockOnClick} />
+const init = () => shallow(
+  <Heart onClick={mockOnClick} />
 )
 
 beforeEach(() => mockOnClick.mockClear())
