@@ -67,7 +67,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": " node scripts/test.js",
+    "httpserver": "http-server --port 3080"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -88,6 +89,7 @@
     "babel-plugin-react-remove-properties": "^0.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
+    "http-server": "^0.12.1",
     "jest-enzyme": "^7.1.2"
   },
   "jest": {

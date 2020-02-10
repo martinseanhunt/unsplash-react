@@ -5,8 +5,10 @@ import { act } from 'react-dom/test-utils'
 import { findByTest } from '../../../test/testUtils' 
 import PreloadImg from '../PreloadImg'
 
+const HTTP_SERVER_URL = process.env.HTTP_SERVER_URL || 'http://localhost:3080/'
+
 const defaultProps = {
-  src: 'https://images.unsplash.com/photo-1581084324492-c8076f130f86?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjExMzU0Mn0',
+  src: HTTP_SERVER_URL + 'img/testImg.jpg',
   loadingText: 'heloooo'
 }
 
@@ -22,22 +24,33 @@ test('Renders the image component when loaded', async () => {
   const wrapper = init()
 
   /* 
-    NOTE: Waiting to give the image time to load because I can't listen 
+    NOTE: Waiting to give the image time to load because I can't listen  
     for when the onload event is fired within the useEffect hook.
-    I don't know that this is the best solution as it's obviously brittle
-    and dependant both on the image I'm passing still existing and it loading in a 
-    reasonable time. But it's the only solution I have at this point
+    I don't know that this is the best solution as it's too reliant on a
+    local http server and I don't like having to waiting for the useEffect
+    to run and the image to have been loaded. 
+    But it's the only solution I have at this point
   */
-  await act(async () => await new Promise((r) => setTimeout(r, 2000)))
+  await act(async () => await new Promise((r) => setTimeout(r, 1000)))
 
   // have to simulate something or we can't see the update 
   // even after state change
   wrapper.simulate('click')
   const node = findByTest(wrapper, 'loaded')
+
+  if(!node.exists()) {
+    console.warn(`
+      PLEASE MAKE SURE THE TEST HTTP SERVER IS RUNNING WITH "npm run httpserver"
+      or this test will always fail as it relies on a locally served image. 
+      Running the two scripts concurrently from package.json causes issues with 
+      watching for updates
+    `)
+  }
+
   expect(node.exists()).toBe(true) 
 })
 
-describe('when loading', () => {
+describe('when loading', () => { 
   test('Loading component is rendered', () => {
     const wrapper = init()
     const node = findByTest(wrapper, 'loading')
